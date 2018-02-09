@@ -3,7 +3,9 @@ package com.scottyplunkett.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class HTTPServer {
 
@@ -36,14 +38,24 @@ public class HTTPServer {
                     break;
                 }
             }
-
-            HTTPResponse httpResponse;
-            httpResponse = new HTTPResponse();
-            httpResponse.send(out, new Router().route(request.get(0)));
-            System.err.println("Connection to client terminated!");
+            Path route = new Router().route(request);
+            String stringFromFile = java.nio.file.Files.lines(route).collect(
+                    Collectors.joining());
+            System.out.print(stringFromFile);
+            String response = "HTTP/1.0 200 OK\r\n"+
+                    "Date: Thu, 25 Jan 2018 00:59:59 GMT\r\n"+
+                    "HTTPServer: Apache/0.8.4\r\n"+
+                    "Content-Type: text/html\r\n"+
+                    "Expires: Sat, 01 Jan 2020 00:59:59 GMT\r\n"+
+                    "Last-modified: Fri, 09 Aug 2017 14:21:40 GMT\r\n"+
+                    "\r\n"+
+                    stringFromFile;
+            out.write(response);
+            out.flush();
             out.close();
             in.close();
             socket.close();
+            System.err.println("Connection to client terminated!");
         }
     }
 
