@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,10 +20,19 @@ public class HTTPServerTest {
     }
 
     @Test
-    void testServes200ResponseToGetNicoleRequest(){
-        String request = "GET /nicole HTTP/1.1";
-        String response = HTTPServer.serve(request);
-        int code = HTTPResponse.getCode(response);
-        assertEquals(200, code);
+    void testConnectToSpecificPort() throws IOException {
+        int portNumber = 5555;
+        HTTPServer httpServer = new HTTPServer();
+        ServerSocket serverSocket = httpServer.connect(portNumber);
+        assertEquals(5555, serverSocket.getLocalPort());
+    }
+
+    @Test
+    void testClosePortClosesConnection() throws IOException {
+        int portNumber = 5555;
+        HTTPServer httpServer = new HTTPServer();
+        ServerSocket serverSocket = httpServer.connect(portNumber);
+        httpServer.close(serverSocket);
+        assertEquals(true, serverSocket.isClosed());
     }
 }

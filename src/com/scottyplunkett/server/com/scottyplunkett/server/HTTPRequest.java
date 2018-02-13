@@ -1,35 +1,21 @@
 package com.scottyplunkett.server;
 
-import com.scottyplunkett.server.reading.Request;
-
 import java.io.BufferedReader;
-import java.util.Map;
+import java.io.IOException;
+import java.util.ArrayList;
 
-class HTTPRequest implements Request {
-    private String request;
-
-    HTTPRequest(String request) {
-        this.request = request;
-    }
-
-    public HTTPRequest(BufferedReader in) {
-
-    }
-
-    public void handle(String request) {
-    }
-
-    public void headers() {
-    }
-
-    @Override
-    public Map<String, String> mapRequestHeadersToContent() {
-        return null;
-    }
-
-    @Override
-    public String getRequestLine() {
-        return null;
+class HTTPRequest {
+    static ArrayList<String> read(BufferedReader in) throws IOException {
+        String s;
+        ArrayList<String> request = new ArrayList<>();
+        while ((s = in.readLine()) != null) {
+            request.add(s);
+            System.out.println(s);
+            if (s.isEmpty()) {
+                break;
+            }
+        }
+        return request;
     }
 }
 

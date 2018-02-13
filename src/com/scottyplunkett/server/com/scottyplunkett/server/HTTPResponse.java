@@ -1,45 +1,43 @@
 package com.scottyplunkett.server;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 public class HTTPResponse {
-
-//    public void send(BufferedWriter out, String body) throws IOException {
-//        out.write("HTTP/1.0 200 OK\r\n");
-//        out.write("Date: Thu, 25 Jan 2018 00:59:59 GMT\r\n");
-//        out.write("HTTPServer: Apache/0.8.4\r\n");
-//        out.write("Content-Type: text/html\r\n");
-//        out.write("Expires: Sat, 01 Jan 2020 00:59:59 GMT\r\n");
-//        out.write("Last-modified: Fri, 09 Aug 2017 14:21:40 GMT\r\n");
-//        out.write("\r\n");
-//        out.write(body);
-//        out.close();
-//    };
-
-
-    public void send(BufferedWriter out, String path) throws IOException {
-        out.write("HTTP/1.0 200 OK\r\n");
-        out.write("Date: Thu, 25 Jan 2018 00:59:59 GMT\r\n");
-        out.write("HTTPServer: Apache/0.8.4\r\n");
-        out.write("Content-Type: text/html\r\n");
-        out.write("Expires: Sat, 01 Jan 2020 00:59:59 GMT\r\n");
-        out.write("Last-modified: Fri, 09 Aug 2017 14:21:40 GMT\r\n");
-        out.write("\r\n");
-        Files.lines(Paths.get(path), StandardCharsets.UTF_8).forEach(str -> {
-            try {
-                out.write(str);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        out.close();
-    };
-
-    public static int getCode(String httpResponse) {
-        return 200;
+    public static String build(Path path) throws IOException {
+        String responseHeaders = buildHeaders("1.1","200", "OK", getDate(), "text/html");
+        String responseBody = getResponseBodyContent(path);
+        return responseHeaders + "\r\n" + responseBody;
     }
+
+    static String getDate() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return dateFormat.format(calendar.getTime());
+    }
+
+    static String buildHeaders(String httpVersion,
+                               String responseCode,
+                               String reason,
+                               String date,
+                               String contentType) {
+        return  "HTTP/" + httpVersion + " " + responseCode + " " + reason + "\r\n" +
+                "Date: " + date + "\r\n" +
+                "Content-Type: " + contentType + "\r\n";
+    }
+
+    private static String getResponseBodyContent(Path filePath) throws IOException {
+        String stringFromFile = Files.lines( filePath ).collect( Collectors.joining() );
+        System.out.print(stringFromFile);
+        return stringFromFile;
+    }
+
 }

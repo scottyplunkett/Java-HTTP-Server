@@ -2,47 +2,42 @@ package com.scottyplunkett.server;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RouterTest {
 
     @Test
-    void testRouteGetRoot() throws IOException, URISyntaxException {
-        File file = new File("/helloworld.html");
-        Router router = new Router();
-        assertEquals( file, router.route("GET / HTTP/1.1"));
+    void testRouteGetRoot() {
+        Path expectedPath = Paths.get("pages/helloworld.html");
+        assertEquals( expectedPath, Router.route("GET / HTTP/1.1"));
     }
 
     @Test
-    void testRouteGetNicole() throws IOException, URISyntaxException {
-        File file = new File("/nicole.html");
-        Router router = new Router();
-        assertEquals(file, router.route("GET /nicole HTTP/1.1"));
+    void testRouteGetNicole() {
+        Path expectedPath = Paths.get("pages/nicole.html");
+        assertEquals(expectedPath, Router.route("GET /nicole HTTP/1.1"));
+
     }
 
     @Test
-    void testRouteGetPaul() throws IOException, URISyntaxException {
-        File file = new File("/paul.html");
-        Router router = new Router();
-        assertEquals(file, router.route("GET /paul HTTP/1.1"));
+    void testRouteGetPaul() {
+        Path expectedPath = Paths.get("pages/paul.html");
+        assertEquals(expectedPath, Router.route("GET /paul HTTP/1.1"));
     }
 
     @Test
-    void testRouteGetJosh() throws IOException, URISyntaxException {
-        File file = new File("/josh.html");
-        Router router = new Router();
-        assertEquals(file, router.route("GET /josh HTTP/1.1"));
+    void testRouteGetJosh() {
+        Path expectedPath = Paths.get("pages/josh.html");
+        assertEquals(expectedPath, Router.route("GET /josh HTTP/1.1"));
     }
 
     @Test
-    void testRouteGetInvalidResource() throws IOException, URISyntaxException {
-        File file = new File("/404.html");
-        Router router = new Router();
-        assertEquals(file, router.route("GET /turtle HTTP/1.1"));
+    void testRouteGetInvalidResource() {
+        Path expectedPath = Paths.get("pages/404.html");
+        assertEquals(expectedPath, Router.route("GET /turtle HTTP/1.1"));
     }
 
 }
