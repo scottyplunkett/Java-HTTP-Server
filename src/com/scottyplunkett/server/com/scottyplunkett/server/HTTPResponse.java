@@ -11,27 +11,34 @@ import java.util.stream.Collectors;
 
 public class HTTPResponse {
     public static String build(Path path) throws IOException {
-        String responseHeaders = buildHeaders("1.1","200", "OK", getDate(), "text/html");
+        String responseHeaders = buildHeaders("200", "OK",
+                                              getDate(),
+                                              "text/html");
         String responseBody = getResponseBodyContent(path);
         return responseHeaders + "\r\n" + responseBody;
     }
 
     static String getDate() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+        String format = "EEE, dd MMM yyyy HH:mm:ss z";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         return dateFormat.format(calendar.getTime());
     }
 
-    static String buildHeaders(String httpVersion,
-                               String responseCode,
+    static String buildHeaders(String responseCode,
                                String reason,
                                String date,
                                String contentType) {
-        return  "HTTP/" + httpVersion + " " + responseCode + " " + reason + "\r\n" +
-                "Date: " + date + "\r\n" +
-                "Content-Type: " + contentType + "\r\n";
+        String space = " ";
+        String CRLF = "\r\n";
+        String statusLine = "HTTP/1.1 " + responseCode + space + reason + CRLF;
+        String dateLine = "Date: " + date + CRLF;
+        String contentTypeLine = "Content-Type: " + contentType + CRLF;
+        return  statusLine +
+                dateLine +
+                contentTypeLine;
+
     }
 
     private static String getResponseBodyContent(Path filePath) throws IOException {
