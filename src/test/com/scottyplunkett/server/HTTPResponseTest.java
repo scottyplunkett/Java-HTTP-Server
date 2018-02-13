@@ -2,8 +2,6 @@ package com.scottyplunkett.server;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -12,11 +10,6 @@ import java.util.TimeZone;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HTTPResponseTest {
-
-    @Test
-    void build() throws IOException {
-        }
-    };
 
     @Test
     void getDate() {
