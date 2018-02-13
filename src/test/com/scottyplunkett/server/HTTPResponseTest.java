@@ -14,8 +14,8 @@ class HTTPResponseTest {
     @Test
     void getDate() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
+        String format = "EEE, dd MMM yyyy HH:mm:ss z";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         String expectedDate = dateFormat.format(calendar.getTime());
         String actualDate = HTTPResponse.getDate();
@@ -24,11 +24,13 @@ class HTTPResponseTest {
 
     @Test
     void buildHeaders() {
-        assertEquals("HTTP/1.1 200 OK\r\n" +
-                        "Date: mockdate\r\n" +
-                        "Content-Type: text/html\r\n",
-                HTTPResponse.buildHeaders("1.1", "200", "OK",
-                        "mockdate",
-                        "text/html"));
+        String expectedBuilt =  "HTTP/1.1 200 OK\r\n" +
+                                "Date: mockdate\r\n" +
+                                "Content-Type: text/html\r\n";
+        String actualBuild = HTTPResponse.buildHeaders(
+                                "200", "OK",
+                                "mockdate",
+                                "text/html");
+        assertEquals(expectedBuilt, actualBuild);
     }
 }
