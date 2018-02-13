@@ -1,7 +1,6 @@
 package com.scottyplunkett.server;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -10,9 +9,6 @@ import java.net.ServerSocket;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HTTPServerTest {
-    @BeforeEach
-    void setUp() throws Exception {
-    }
 
     @AfterEach
     void tearDown() throws IOException {

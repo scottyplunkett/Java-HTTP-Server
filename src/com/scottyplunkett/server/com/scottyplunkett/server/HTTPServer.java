@@ -38,14 +38,15 @@ public class HTTPServer {
     private static void serve(Socket socket,
                               BufferedReader in,
                               BufferedWriter out) throws IOException {
-            String requestLine = HTTPRequest.read(in).get(0);
-            Path resource = Router.route(requestLine);
-            String response = HTTPResponse.build(resource);
-            out.write(response);
-            out.flush();
-            out.close();
-            in.close();
-            socket.close();
-            System.err.println("Connection to client terminated!");
+        String requestLine = HTTPRequest.read(in).get(0);
+        Path content = Router.route(requestLine);
+        String response = HTTPResponse.build(content);
+        out.write(response);
+        out.flush();
+        System.err.println("Client served…");
+        out.close();
+        in.close();
+        socket.close();
+        System.err.println("Connection Terminated!");
         }
     }
