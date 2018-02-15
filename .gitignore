@@ -8,6 +8,9 @@ modules.xml
 # Compiled class file
 *.class
 
+### Junit ###
+./
+
 # Log file
 *.log
 
