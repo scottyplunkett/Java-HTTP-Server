@@ -39,5 +39,4 @@ class RouterTest {
         Path expectedPath = Paths.get("pages/404.html");
         assertEquals(expectedPath, Router.route("GET /turtle HTTP/1.1"));
     }
-
 }

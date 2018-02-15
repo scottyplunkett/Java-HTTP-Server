@@ -13,8 +13,11 @@ public class Router {
                 return Paths.get("pages/paul.html");
             else if ("GET /josh HTTP/1.1".equals(requestLine))
                 return Paths.get("pages/josh.html");
-            else
-                return Paths.get("pages/404.html");
+            else if (requestLine.split("\\?").length <= 1) {
+                    return Paths.get("pages/404.html");
+                } else {
+                    return Paths.get("pages/dynamic.html");
+            }
         }
-    }
+}
 

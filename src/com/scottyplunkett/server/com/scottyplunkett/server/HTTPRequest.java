@@ -10,12 +10,15 @@ class HTTPRequest {
         ArrayList<String> request = new ArrayList<>();
         while ((s = in.readLine()) != null) {
             request.add(s);
-            System.out.println(s);
             if (s.isEmpty()) {
                 break;
             }
         }
         return request;
+    }
+
+    public static String getRequestLine(ArrayList<String> request) {
+        return request.get(0);
     }
 }
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ParserTest {
+
     @Test
     void findRequestMethod(){
         String getRequest = "GET /pages?first=Michael&last=Scarn HTTP/1.1";

@@ -19,4 +19,14 @@ class HTTPRequestTest {
         Collections.addAll(requestList, new String[]{"requestLine", "line2", "line3", "line4"});
         assertEquals(requestList, HTTPRequest.read(in));
     }
+
+    @Test
+    void testGetRequestLine() throws IOException {
+        InputStream stream = new ByteArrayInputStream("requestLine\r\nline2\r\nline3\r\nline4".getBytes());
+        InputStreamReader feed = new InputStreamReader(stream);
+        BufferedReader in = new BufferedReader(feed);
+        ArrayList<String> request = new ArrayList<>();
+        Collections.addAll(request, new String[]{"requestLine", "line2", "line3", "line4"});
+        assertEquals("requestLine", HTTPRequest.getRequestLine(request));
+    }
 }
