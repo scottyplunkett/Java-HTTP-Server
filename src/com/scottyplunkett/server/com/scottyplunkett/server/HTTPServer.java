@@ -4,17 +4,17 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 public class HTTPServer {
 
+    public static void main() throws IOException {
+        main(new String[]{"4444"});
+    }
+
     public static void main(String[] args) throws IOException {
-        if (args.length == 0) {
-            run(4444);
-        } else {
             int port = Integer.parseInt(args[0]);
             run(port);
-        }
-
     }
 
     private static void run(int port) throws IOException {
@@ -38,9 +38,9 @@ public class HTTPServer {
     private static void serve(Socket socket,
                               BufferedReader in,
                               BufferedWriter out) throws IOException {
-        String requestLine = HTTPRequest.read(in).get(0);
-        Path content = Router.route(requestLine);
-        String response = HTTPResponse.build(content);
+        ArrayList<String> request = HTTPRequest.read(in);
+        String resourceRequested = HTTPRequest.getRequestLine(request);
+        String response = HTTPResponse.build(resourceRequested);
         out.write(response);
         out.flush();
         System.err.println("Client served…");
