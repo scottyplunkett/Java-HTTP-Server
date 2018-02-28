@@ -18,7 +18,7 @@ class HTTPResponseTest {
         @Test
         void build() throws IOException {
             String expectedHeaders = HTTPResponse.buildHeaders(
-                    "200", "OK",
+                    "200 OK",
                     "text/html");
             String nicoleRequest = "GET /nicole HTTP/1.1";
             Path filePath = Router.route(nicoleRequest);
@@ -29,7 +29,7 @@ class HTTPResponseTest {
         @Test
         void buildDynamicHTML() throws IOException {
             String expectedHeaders = HTTPResponse.buildHeaders(
-                    "200", "OK",
+                    "200 OK",
                     "text/html");
             String requestedWithParams = "GET /pages?first=Michael&last=Scarn HTTP/1.1";
             Path templatePath = Router.route(requestedWithParams);
@@ -39,7 +39,7 @@ class HTTPResponseTest {
             assertEquals(expectedHeaders + "\r\n" + content, HTTPResponse.build(requestedWithParams));
 
             String expectedHeaders2 = HTTPResponse.buildHeaders(
-                    "200", "OK",
+                    "200 OK",
                     "text/html");
             String requestedWithParams2 = "GET /pages?first=Scott&last=Plunkett HTTP/1.1";
             Path templatePath2 = Router.route(requestedWithParams2);
@@ -68,8 +68,22 @@ class HTTPResponseTest {
                     "Date: " + HTTPResponse.getDate() + "\r\n" +
                     "Content-Type: text/html\r\n";
             String actualBuild = HTTPResponse.buildHeaders(
-                    "200", "OK",
+                    "200 OK",
                     "text/html");
             assertEquals(expectedBuilt, actualBuild);
         }
+
+        @Test
+        void build302Headers() {
+            String expectedBuilt302Headers =
+                    "HTTP/1.1 302 Found\r\n" +
+                    "Location: /\r\n" +
+                    "Date: " + HTTPResponse.getDate() + "\r\n" +
+                    "Content-Type: text/html\r\n";
+            String actualBuilt302Headers = HTTPResponse.buildHeaders(
+                    "302 Found",
+                    "text/html");
+            assertEquals(expectedBuilt302Headers, actualBuilt302Headers);
+        }
+
 }

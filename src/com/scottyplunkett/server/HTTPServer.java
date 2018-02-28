@@ -3,13 +3,12 @@ package com.scottyplunkett.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class HTTPServer {
 
     public static void main() throws IOException {
-        main(new String[]{"4444"});
+        main(new String[]{"5000"});
     }
 
     public static void main(String[] args) throws IOException {
