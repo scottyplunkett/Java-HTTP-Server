@@ -3,7 +3,6 @@ package com.scottyplunkett.server;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -20,9 +19,8 @@ abstract class HTTPResponse {
 
     static String build(String requested) throws IOException {
         String route = Parser.findRequestedRoute(requested);
-        Path path = Paths.get(route);
-        String responseHeaders = buildHeaders("200", "OK",
-                                              "text/html");
+        int encoded = HTTPResponseCode.encode(route);
+        String responseHeaders = buildHeaders(HTTPResponseCode.retrieve(encoded), "text/html");
         String responseBody = getResponseBodyContent(requested);
         return responseHeaders + "\r\n" + responseBody;
     }
@@ -35,18 +33,15 @@ abstract class HTTPResponse {
         return dateFormat.format(calendar.getTime());
     }
 
-    static String buildHeaders(String responseCode,
-                               String reason,
-                               String contentType) {
+    static String buildHeaders(String status, String contentType) {
         String space = " ";
         String CRLF = "\r\n";
-        String statusLine = "HTTP/1.1 " + responseCode + space + reason + CRLF;
+        String statusLine = "HTTP/1.1 " + status + CRLF;
+        String locationLine = "Location: /\r\n";
         String dateLine = "Date: " + getDate() + CRLF;
         String contentTypeLine = "Content-Type: " + contentType + CRLF;
-        return  statusLine +
-                dateLine +
-                contentTypeLine;
-
+        if ("302 Found".equals(status)) statusLine = statusLine + locationLine;
+        return statusLine + dateLine + contentTypeLine;
     }
 
     static String getResponseBodyContent(String requested) throws IOException {
