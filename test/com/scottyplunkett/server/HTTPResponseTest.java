@@ -31,21 +31,21 @@ class HTTPResponseTest {
             String expectedHeaders = HTTPResponse.buildHeaders(
                     "200 OK",
                     "text/html");
-            String requestedWithParams = "GET /pages?first=Michael&last=Scarn HTTP/1.1";
+            String requestedWithParams = "GET /pages?variable_1=Michael&variable_2=Scarn HTTP/1.1";
             Path templatePath = Router.route(requestedWithParams);
             String content = Files.lines( templatePath ).collect( Collectors.joining() );
-            content = content.replace("$first", "Michael");
-            content = content.replace("$last", "Scarn");
+            content = content.replace("$variable_1", "variable_1 = Michael");
+            content = content.replace("$variable_2", "variable_2 = Scarn");
             assertEquals(expectedHeaders + "\r\n" + content, HTTPResponse.build(requestedWithParams));
 
             String expectedHeaders2 = HTTPResponse.buildHeaders(
                     "200 OK",
                     "text/html");
-            String requestedWithParams2 = "GET /pages?first=Scott&last=Plunkett HTTP/1.1";
+            String requestedWithParams2 = "GET /pages?variable_1=Scott&variable_2=Plunkett HTTP/1.1";
             Path templatePath2 = Router.route(requestedWithParams2);
             String content2 = Files.lines( templatePath2 ).collect( Collectors.joining() );
-            content2 = content2.replace("$first", "Scott");
-            content2 = content2.replace("$last", "Plunkett");
+            content2 = content2.replace("$variable_1", "variable_1 = Scott");
+            content2 = content2.replace("$variable_2", "variable_2 = Plunkett");
             assertEquals(expectedHeaders2 + "\r\n" + content2, HTTPResponse.build(requestedWithParams2));
         }
 

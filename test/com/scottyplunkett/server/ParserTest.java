@@ -2,6 +2,7 @@ package com.scottyplunkett.server;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ class ParserTest {
     }
 
     @Test
-    void mapQuery(){
+    void mapQuery() throws UnsupportedEncodingException {
         Map <String, String> expectedQueryHashMap1 = new HashMap<>();
         expectedQueryHashMap1.put("first", "Michael");
         expectedQueryHashMap1.put("last", "Scarn");
@@ -55,4 +56,10 @@ class ParserTest {
         assertEquals("DELETE", Parser.parseFor("method", deleteRequest));
     }
 
+    @Test
+    void decodeURLSafeString() throws UnsupportedEncodingException {
+        String decoded = "Operators <, >, =, !=; +, -, *, &, @, #, $, [, ]: \"is that all\"?";
+        String encoded = "Operators%20%3C%2C%20%3E%2C%20%3D%2C%20!%3D%3B%20%2B%2C%20-%2C%20*%2C%20%26%2C%20%40%2C%20%23%2C%20%24%2C%20%5B%2C%20%5D%3A%20%22is%20that%20all%22%3F";
+        assertEquals(decoded, Parser.decodeURLSafeString(encoded));
+    }
 }
