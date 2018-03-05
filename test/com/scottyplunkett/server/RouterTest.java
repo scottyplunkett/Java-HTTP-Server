@@ -39,4 +39,10 @@ class RouterTest {
         Path expectedPath = Paths.get("pages/404.html");
         assertEquals(expectedPath, Router.route("GET /turtle HTTP/1.1"));
     }
+
+    @Test
+    void testRouteGetFile() {
+        Path expectedPath = Paths.get("pages/file1");
+        assertEquals(expectedPath, Router.route("GET /file1 HTTP/1.1"));
+    }
 }
