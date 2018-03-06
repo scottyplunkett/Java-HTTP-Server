@@ -18,7 +18,7 @@ class HTTPResponseTest {
 
         @Test
         void build() throws IOException {
-            String expectedHeaders = HTTPResponse.buildHeaders(
+            String expectedHeaders = HTTPHeaders.build(
                     "200 OK",
                     "text/html",
                     "bla");
@@ -40,12 +40,12 @@ class HTTPResponseTest {
                     "<a href=\"/partial_content.txt\">partial_content.txt</a><br>" +
                     "<a href=\"/image.png\">image.png</a><br>";
             String publicDirectory = String.valueOf(Paths.get("public"));
-            assertEquals(expectedHTML, HTTPResponse.buildContentFromDirectory(publicDirectory));
+            assertEquals(expectedHTML, HTTPResponseBody.buildContentFromDirectory(publicDirectory));
         }
 
         @Test
         void buildDynamicHTML() throws IOException {
-            String expectedHeaders = HTTPResponse.buildHeaders(
+            String expectedHeaders = HTTPHeaders.build(
                     "200 OK",
                     "text/html",
                     "bla");
@@ -56,7 +56,7 @@ class HTTPResponseTest {
             content = content.replace("$variable_2", "variable_2 = Scarn");
             assertEquals(expectedHeaders + "\r\n" + content, HTTPResponse.build(requestedWithParams, "bla"));
 
-            String expectedHeaders2 = HTTPResponse.buildHeaders(
+            String expectedHeaders2 = HTTPHeaders.build(
                     "200 OK",
                     "text/html",
                     "bla");
@@ -76,30 +76,30 @@ class HTTPResponseTest {
             SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
             String expectedDate = dateFormat.format(calendar.getTime());
-            String actualDate = HTTPResponse.getDate();
+            String actualDate = Date.getDate();
             assertEquals(expectedDate, actualDate);
         }
 
         @Test
         void buildHeaders() {
-            String date = HTTPResponse.getDate();
+            String date = Date.getDate();
             String expectedBuilt =
                     "HTTP/1.1 200 OK\r\n" +
                     "Date: " + date + "\r\n" +
                     "Content-Type: text/html\r\n";
-            String actualBuild = HTTPResponse.buildHeaders("200 OK", "text/html", date);
+            String actualBuild = HTTPHeaders.build("200 OK", "text/html", date);
             assertEquals(expectedBuilt, actualBuild);
         }
 
         @Test
         void build302Headers() {
-            String date = HTTPResponse.getDate();
+            String date = Date.getDate();
             String expectedBuilt302Headers =
                     "HTTP/1.1 302 Found\r\n" +
                     "Location: /\r\n" +
                     "Date: " + date + "\r\n" +
                     "Content-Type: text/html\r\n";
-            String actualBuilt302Headers = HTTPResponse.buildHeaders("302 Found", "text/html", date);
+            String actualBuilt302Headers = HTTPHeaders.build("302 Found", "text/html", date);
             assertEquals(expectedBuilt302Headers, actualBuilt302Headers);
         }
 
