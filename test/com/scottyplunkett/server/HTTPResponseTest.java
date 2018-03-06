@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -38,7 +39,8 @@ class HTTPResponseTest {
                     "<link>file1</link>" +
                     "<link>partial_content.txt</link>" +
                     "<link>image.png</link>";
-            assertEquals(expectedHTML, HTTPResponse.buildContentFromDirectory());
+            String publicDirectory = String.valueOf(Paths.get("public"));
+            assertEquals(expectedHTML, HTTPResponse.buildContentFromDirectory(publicDirectory));
         }
 
         @Test

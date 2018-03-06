@@ -48,13 +48,20 @@ abstract class HTTPResponse {
 
     static String getResponseBodyContent(String requested) throws IOException {
         Path filePath = Router.route(requested);
-        if (!Files.isDirectory(filePath)) {
-            String htmlString = Files.lines(filePath).collect(Collectors.joining());
-            if ("pages/dynamic.html".equals(filePath.toString())) {
-                buildContentFromQuery(requested, htmlString);
-            } else return htmlString;
-        } else return buildContentFromDirectory();
-        return body;
+        return generateContent(requested, filePath);
+    }
+
+    private static String generateContent(String requested, Path filePath) throws IOException {
+        if (Files.isDirectory(filePath)) return buildContentFromDirectory(filePath.toString());
+        else return generateContentFromPages(filePath, requested);
+    }
+
+    private static String generateContentFromPages(Path pagesPath, String requested) throws IOException {
+        String htmlString = Files.lines(pagesPath).collect(Collectors.joining());
+        if ("pages/dynamic.html".equals(pagesPath.toString())) {
+            buildContentFromQuery(requested, htmlString);
+            return body;
+        } else return htmlString;
     }
 
 
@@ -64,16 +71,20 @@ abstract class HTTPResponse {
             query.keySet().forEach(key -> {
                 String tag = "$" + key.toString();
                 if (html[0].contains(tag)) {
-                    String value = String.valueOf(query.get(key));
-                    setBody(html[0].replace(tag, key + " = " + value));
-                    html[0] = body;
+                    replaceHTMLTagWithKey(html, query, key, tag);
                 }
             });
         }
 
-    static String buildContentFromDirectory() {
+    private static void replaceHTMLTagWithKey(String[] html, Map query, Object key, String tag) {
+        String value = String.valueOf(query.get(key));
+        setBody(html[0].replace(tag, key + " = " + value));
+        html[0] = body;
+    }
+
+    static String buildContentFromDirectory(String publicDirectory) {
         String content = "";
-        File[] files = new File("public").listFiles();
+        File[] files = new File(publicDirectory).listFiles();
         List<String> names =  Arrays.asList(files).parallelStream()
                                     .map(file -> file.getName())
                                     .collect(Collectors.toList());
