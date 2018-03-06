@@ -31,14 +31,14 @@ class HTTPResponseTest {
         @Test
         void buildContentFromDirectory() {
             String expectedHTML =
-                    "<link>text-file.txt</link>" +
-                    "<link>file2</link>" +
-                    "<link>patch-content.txt</link>" +
-                    "<link>image.gif</link>" +
-                    "<link>image.jpeg</link>" +
-                    "<link>file1</link>" +
-                    "<link>partial_content.txt</link>" +
-                    "<link>image.png</link>";
+                    "<a href=\"/text-file.txt\">text-file.txt</a><br>" +
+                    "<a href=\"/file2\">file2</a><br>" +
+                    "<a href=\"/patch-content.txt\">patch-content.txt</a><br>" +
+                    "<a href=\"/image.gif\">image.gif</a><br>" +
+                    "<a href=\"/image.jpeg\">image.jpeg</a><br>" +
+                    "<a href=\"/file1\">file1</a><br>" +
+                    "<a href=\"/partial_content.txt\">partial_content.txt</a><br>" +
+                    "<a href=\"/image.png\">image.png</a><br>";
             String publicDirectory = String.valueOf(Paths.get("public"));
             assertEquals(expectedHTML, HTTPResponse.buildContentFromDirectory(publicDirectory));
         }

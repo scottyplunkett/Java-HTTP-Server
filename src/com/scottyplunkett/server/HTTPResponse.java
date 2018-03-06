@@ -70,10 +70,9 @@ abstract class HTTPResponse {
             Map query = Parser.mapQuery(requested);
             query.keySet().forEach(key -> {
                 String tag = "$" + key.toString();
-                if (html[0].contains(tag)) {
-                    replaceHTMLTagWithKey(html, query, key, tag);
+                if (html[0].contains(tag)) replaceHTMLTagWithKey(html, query, key, tag);
                 }
-            });
+            );
         }
 
     private static void replaceHTMLTagWithKey(String[] html, Map query, Object key, String tag) {
@@ -89,7 +88,7 @@ abstract class HTTPResponse {
                                     .map(file -> file.getName())
                                     .collect(Collectors.toList());
         for (String name : names) {
-            String linkToFile = "<link>" + name + "</link>";
+            String linkToFile = "<a href=\"" + "/" + name + "\">" + name + "</a><br>";
             content += linkToFile;
         }
         return content;
