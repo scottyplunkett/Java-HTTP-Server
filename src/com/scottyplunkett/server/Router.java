@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 public class Router {
         public static Path route(String requestLine) {
             if ("GET / HTTP/1.1".equals(requestLine))
-                return Paths.get("pages/helloworld.html");
+                return Paths.get("public");
             else if ("GET /nicole HTTP/1.1".equals(requestLine))
                 return Paths.get("pages/nicole.html");
             else if ("GET /paul HTTP/1.1".equals(requestLine))

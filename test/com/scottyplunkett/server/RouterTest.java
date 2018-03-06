@@ -11,7 +11,7 @@ class RouterTest {
 
     @Test
     void testRouteGetRoot() {
-        Path expectedPath = Paths.get("pages/helloworld.html");
+        Path expectedPath = Paths.get("public");
         assertEquals( expectedPath, Router.route("GET / HTTP/1.1"));
     }
 

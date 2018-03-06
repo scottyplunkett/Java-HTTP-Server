@@ -1,26 +1,29 @@
 package com.scottyplunkett.server;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 
 abstract class HTTPResponse {
     static String body;
 
-    public static void setBody(String htmlString) {
+    static void setBody(String htmlString) {
         body = htmlString;
     }
 
     static String build(String requested) throws IOException {
+        return build(requested, getDate());
+    }
+
+    static String build(String requested, String date) throws IOException {
         String route = Parser.findRequestedRoute(requested);
         int encoded = HTTPResponseCode.encode(route);
-        String responseHeaders = buildHeaders(HTTPResponseCode.retrieve(encoded), "text/html");
+        String responseHeaders = buildHeaders(HTTPResponseCode.retrieve(encoded), "text/html", date);
         String responseBody = getResponseBodyContent(requested);
         return responseHeaders + "\r\n" + responseBody;
     }
@@ -33,11 +36,11 @@ abstract class HTTPResponse {
         return dateFormat.format(calendar.getTime());
     }
 
-    static String buildHeaders(String status, String contentType) {
+    static String buildHeaders(String status, String contentType, String date) {
         String CRLF = "\r\n";
         String statusLine = "HTTP/1.1 " + status + CRLF;
         String locationLine = "Location: /\r\n";
-        String dateLine = "Date: " + getDate() + CRLF;
+        String dateLine = "Date: " + date + CRLF;
         String contentTypeLine = "Content-Type: " + contentType + CRLF;
         if ("302 Found".equals(status)) statusLine = statusLine + locationLine;
         return statusLine + dateLine + contentTypeLine;
@@ -45,21 +48,39 @@ abstract class HTTPResponse {
 
     static String getResponseBodyContent(String requested) throws IOException {
         Path filePath = Router.route(requested);
-        String htmlString = Files.lines( filePath ).collect( Collectors.joining() );
-        if(!filePath.endsWith("dynamic.html")) {
-            return htmlString;
-        } else {
+        if (!Files.isDirectory(filePath)) {
+            String htmlString = Files.lines(filePath).collect(Collectors.joining());
+            if ("pages/dynamic.html".equals(filePath.toString())) {
+                buildContentFromQuery(requested, htmlString);
+            } else return htmlString;
+        } else return buildContentFromDirectory();
+        return body;
+    }
+
+
+    private static void buildContentFromQuery(String requested, String htmlString) throws UnsupportedEncodingException {
             final String[] html = {htmlString};
             Map query = Parser.mapQuery(requested);
             query.keySet().forEach(key -> {
                 String tag = "$" + key.toString();
                 if (html[0].contains(tag)) {
                     String value = String.valueOf(query.get(key));
-                    setBody(html[0].replace(tag, String.valueOf(key) + " = " + value));
+                    setBody(html[0].replace(tag, key + " = " + value));
                     html[0] = body;
                 }
             });
         }
-        return body;
+
+    static String buildContentFromDirectory() {
+        String content = "";
+        File[] files = new File("public").listFiles();
+        List<String> names =  Arrays.asList(files).parallelStream()
+                                    .map(file -> file.getName())
+                                    .collect(Collectors.toList());
+        for (String name : names) {
+            String linkToFile = "<link>" + name + "</link>";
+            content += linkToFile;
+        }
+        return content;
     }
 }
