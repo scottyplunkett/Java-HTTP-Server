@@ -34,7 +34,6 @@ abstract class HTTPResponse {
     }
 
     static String buildHeaders(String status, String contentType) {
-        String space = " ";
         String CRLF = "\r\n";
         String statusLine = "HTTP/1.1 " + status + CRLF;
         String locationLine = "Location: /\r\n";
@@ -56,7 +55,7 @@ abstract class HTTPResponse {
                 String tag = "$" + key.toString();
                 if (html[0].contains(tag)) {
                     String value = String.valueOf(query.get(key));
-                    setBody(html[0].replace(tag, value));
+                    setBody(html[0].replace(tag, String.valueOf(key) + " = " + value));
                     html[0] = body;
                 }
             });
