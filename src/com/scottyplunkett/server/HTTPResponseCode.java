@@ -11,7 +11,7 @@ enum HTTPResponseCode {
     NOT_ALLOWED(405, "405 Method Not Allowed"),
     INVALID_RANGE(416, "416 Range Not Satisfiable"),
     CONFLICT(409, "409 Conflict"),
-    TEAPOT(418, "418 I'm a teapot"),
+    TEAPOT(418, "418"),
     SERVER_ERROR(500, "500 Internal Server Error");
 
     private final int code;
@@ -39,6 +39,7 @@ enum HTTPResponseCode {
         switch (requested) {
             case "/redirect": return 302;
             case "/foobar": return 404;
+            case "/coffee": return 418;
             default: return 200;
         }
     }
