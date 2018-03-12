@@ -45,4 +45,16 @@ class RouterTest {
         Path expectedPath = Paths.get("pages/file1");
         assertEquals(expectedPath, Router.route("GET /file1 HTTP/1.1"));
     }
+
+    @Test
+    void testRouteGetCoffee() {
+        Path expectedPath = Paths.get("pages/418.html");
+        assertEquals(expectedPath, Router.route("GET /coffee HTTP/1.1"));
+    }
+
+    @Test
+    void testRouteForRequestWithParamsDynamicRoute() {
+        Path expectedPath = Paths.get("pages/dynamic.html");
+        assertEquals(expectedPath, Router.route("GET /parameters?variable_1=bla&variable_2=bla HTTP/1.1"));
+    }
 }

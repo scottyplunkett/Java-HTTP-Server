@@ -20,6 +20,4 @@ class HTTPResponse {
         String responseBody = HTTPResponseBody.getResponseBodyContent(requested);
         return responseHeaders + "\r\n" + responseBody;
     }
-
-
 }
