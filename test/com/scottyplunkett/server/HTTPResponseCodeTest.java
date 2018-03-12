@@ -19,7 +19,7 @@ class HTTPResponseCodeTest {
         assertEquals("405 Method Not Allowed", HTTPResponseCode.retrieve(405));
         assertEquals("416 Range Not Satisfiable", HTTPResponseCode.retrieve(416));
         assertEquals("409 Conflict", HTTPResponseCode.retrieve(409));
-        assertEquals("418 I'm a teapot", HTTPResponseCode.retrieve(418));
+        assertEquals("418", HTTPResponseCode.retrieve(418));
         assertEquals("500 Internal Server Error", HTTPResponseCode.retrieve(500));
     }
 
@@ -28,6 +28,7 @@ class HTTPResponseCodeTest {
         assertEquals(302, HTTPResponseCode.encode("/redirect"));
         assertEquals(200, HTTPResponseCode.encode("/"));
         assertEquals(404, HTTPResponseCode.encode("/foobar"));
+        assertEquals(418, HTTPResponseCode.encode("/coffee"));
     }
 
 }
