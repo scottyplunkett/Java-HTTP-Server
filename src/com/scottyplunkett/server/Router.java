@@ -21,6 +21,6 @@ public class Router {
     }
 
     private static boolean hasParameters(String requestLine) {
-        return requestLine.split("\\?").length > 1 ? true : false;
+        return requestLine.split("\\?").length > 1;
     }
 }
