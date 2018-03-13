@@ -11,7 +11,7 @@ class RouterTest {
 
     @Test
     void testRouteGetRoot() {
-        Path expectedPath = Paths.get("pages/helloworld.html");
+        Path expectedPath = Paths.get("public");
         assertEquals( expectedPath, Router.route("GET / HTTP/1.1"));
     }
 
@@ -38,6 +38,12 @@ class RouterTest {
     void testRouteGetInvalidResource() {
         Path expectedPath = Paths.get("pages/404.html");
         assertEquals(expectedPath, Router.route("GET /turtle HTTP/1.1"));
+    }
+
+    @Test
+    void testRouteGetFile() {
+        Path expectedPath = Paths.get("pages/file1");
+        assertEquals(expectedPath, Router.route("GET /file1 HTTP/1.1"));
     }
 
     @Test

@@ -10,7 +10,7 @@ public class Router {
 
     private static Path walkRoutes(String requestLine) {
         switch (requestLine) {
-            case "GET / HTTP/1.1" : return Paths.get("pages/helloworld.html");
+            case "GET / HTTP/1.1" : return Paths.get("public");
             case "GET /nicole HTTP/1.1" : return Paths.get("pages/nicole.html");
             case "GET /paul HTTP/1.1" : return Paths.get("pages/paul.html");
             case "GET /josh HTTP/1.1" : return Paths.get("pages/josh.html");
