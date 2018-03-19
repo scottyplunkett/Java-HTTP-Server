@@ -5,20 +5,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 class HTTPRequest {
-    static ArrayList<String> read(BufferedReader in) throws IOException {
+    private ArrayList<String> requestContent;
+    private String requestLine;
+
+    HTTPRequest(BufferedReader in) throws IOException {
+        requestContent = new ArrayList<>();
         String s;
-        ArrayList<String> request = new ArrayList<>();
         while ((s = in.readLine()) != null) {
-            request.add(s);
+            requestContent.add(s);
             if (s.isEmpty()) {
                 break;
             }
         }
-        return request;
+        requestLine = requestContent.get(0);
     }
 
-    public static String getRequestLine(ArrayList<String> request) {
-        return request.get(0);
+    String getRequestLine() {
+        return requestLine;
     }
 }
 

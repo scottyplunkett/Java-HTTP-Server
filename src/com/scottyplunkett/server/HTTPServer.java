@@ -3,9 +3,8 @@ package com.scottyplunkett.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class HTTPServer {
+class HTTPServer {
 
     public static void main() throws IOException {
         main(new String[]{"5000"});
@@ -37,9 +36,9 @@ public class HTTPServer {
     private static void serve(Socket socket,
                               BufferedReader in,
                               BufferedWriter out) throws IOException {
-        ArrayList<String> request = HTTPRequest.read(in);
-        String resourceRequested = HTTPRequest.getRequestLine(request);
-        String response = HTTPResponse.build(resourceRequested);
+        HTTPRequest request = new HTTPRequest(in);
+        String resourceRequested = request.getRequestLine();
+        String response = new HTTPResponse(resourceRequested).get();
         out.write(response);
         out.flush();
         System.err.println("Client served…");
@@ -47,5 +46,5 @@ public class HTTPServer {
         in.close();
         socket.close();
         System.err.println("Connection Terminated!");
-        }
     }
+}

@@ -30,5 +30,4 @@ class HTTPResponseCodeTest {
         assertEquals(404, HTTPResponseCode.encode("/foobar"));
         assertEquals(418, HTTPResponseCode.encode("/coffee"));
     }
-
 }

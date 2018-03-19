@@ -3,21 +3,22 @@ package com.scottyplunkett.server;
 import java.io.IOException;
 
 class HTTPResponse {
-    static String body;
+    private String responseContent;
 
-    static void setBody(String htmlString) {
-        body = htmlString;
+    HTTPResponse(String requested) throws IOException {
+        this(requested, Date.getDate());
     }
 
-    static String build(String requested) throws IOException {
-        return build(requested, Date.getDate());
-    }
-
-    static String build(String requested, String date) throws IOException {
+    HTTPResponse(String requested, String date) throws IOException {
         String route = Parser.findRequestedRoute(requested);
         int encoded = HTTPResponseCode.encode(route);
-        String responseHeaders = HTTPHeaders.build(HTTPResponseCode.retrieve(encoded), "text/html", date);
-        String responseBody = HTTPResponseBody.getResponseBodyContent(requested);
-        return responseHeaders + "\r\n" + responseBody;
+        String responseCode = HTTPResponseCode.retrieve(encoded);
+        String responseHeaders = new HTTPResponseHeaders(responseCode, "text/html", date).get();
+        HTTPResponseBody responseBody = new HTTPResponseBody(requested);
+        responseContent = responseHeaders + "\r\n" + responseBody.get();
+    }
+
+    String get() {
+        return responseContent;
     }
 }

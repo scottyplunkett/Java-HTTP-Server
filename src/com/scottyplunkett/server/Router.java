@@ -3,7 +3,7 @@ package com.scottyplunkett.server;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Router {
+class Router {
     public static Path route(String requestLine) {
         return hasParameters(requestLine) ? Paths.get("pages/dynamic.html") : walkRoutes(requestLine);
     }

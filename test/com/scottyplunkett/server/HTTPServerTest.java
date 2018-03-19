@@ -6,7 +6,8 @@ import java.net.ServerSocket;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HTTPServerTest {
+class HTTPServerTest {
+
     @Test
     void connect() throws IOException {
         int portNumber = 5555;
