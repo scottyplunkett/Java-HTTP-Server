@@ -13,6 +13,14 @@ class HTTPResponseHeaders {
         responseHeadersContent = statusLine + dateLine + contentTypeLine;
     }
 
+    HTTPResponseHeaders(String status, String contentType, String date, String options) {
+        String statusLine = "HTTP/1.1 " + status + CRLF;
+        String optionsLine = "Allow: " + options + CRLF;
+        String dateLine = "Date: " + date + CRLF;
+        String contentTypeLine = "Content-Type: " + contentType + CRLF;
+        responseHeadersContent = statusLine + optionsLine + dateLine + contentTypeLine;
+    }
+
     String get() {
         return responseHeadersContent;
     }
