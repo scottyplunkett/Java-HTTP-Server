@@ -54,4 +54,13 @@ class HTTPResponseTest {
         String requestMethodOptions2 = "OPTIONS /method_options2 HTTP/1.1";
         assertEquals(expectedHeaders + "\r\n" + "", new HTTPResponse(requestMethodOptions2, "bla").get());
     }
+
+    @Test
+    void getResponsetoGetRequestforPatchContent() throws IOException {
+        String expectedHeaders = "HTTP/1.1 200 OK\r\n" +
+                                 "Date: bla\r\n" +
+                                 "Content-Type: text/html\r\n";
+        String requestGetPatchContent = "GET /patch_content.txt HTTP/1.1";
+        assertEquals(expectedHeaders + "\r\n" + "default content", new HTTPResponse(requestGetPatchContent, "bla").get());
+    }
 }

@@ -69,4 +69,6 @@ class RouterTest {
         Path expectedPath = Paths.get("pages/method_options.html");
         assertEquals(expectedPath, Router.route("OPTIONS /method_options2 HTTP/1.1"));
     }
+
+
 }
