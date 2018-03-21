@@ -70,5 +70,16 @@ class RouterTest {
         assertEquals(expectedPath, Router.route("OPTIONS /method_options2 HTTP/1.1"));
     }
 
+    @Test
+    void testRouteForGetPatchContent() {
+        Path expectedPath = Paths.get("public/patch-content.txt");
+        assertEquals(expectedPath, Router.route("GET /patch-content.txt HTTP/1.1"));
+    }
+
+    @Test
+    void testRouteForPatchPatchContent() {
+        Path expectedPath = Paths.get("public/patch-content.txt");
+        assertEquals(expectedPath, Router.route("PATCH /patch-content.txt HTTP/1.1"));
+    }
 
 }

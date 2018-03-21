@@ -4,6 +4,8 @@ import java.io.IOException;
 
 class HTTPResponse {
     private String responseContent;
+    private HTTPRequest request;
+
 
     HTTPResponse(String requested) throws IOException {
         this(requested, Date.getDate());

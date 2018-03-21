@@ -60,7 +60,8 @@ class HTTPResponseTest {
         String expectedHeaders = "HTTP/1.1 200 OK\r\n" +
                                  "Date: bla\r\n" +
                                  "Content-Type: text/html\r\n";
-        String requestGetPatchContent = "GET /patch_content.txt HTTP/1.1";
-        assertEquals(expectedHeaders + "\r\n" + "default content", new HTTPResponse(requestGetPatchContent, "bla").get());
+        String requestGetPatchContent = "GET /patch-content.txt HTTP/1.1";
+        String expectedResponse = expectedHeaders + "\r\n" + "default content";
+        assertEquals(expectedResponse, new HTTPResponse(requestGetPatchContent, "bla").get());
     }
 }

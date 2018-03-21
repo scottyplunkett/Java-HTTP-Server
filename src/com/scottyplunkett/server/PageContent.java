@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 class PageContent {
     private String pageContent;
 
-    PageContent(Path pagesPath, String requested) throws IOException {
-        String htmlString = Files.lines(pagesPath).collect(Collectors.joining());
-        pageContent = "pages/dynamic.html".equals(pagesPath.toString()) ?
+    PageContent(Path path, String requested) throws IOException {
+        String htmlString = Files.lines(path).collect(Collectors.joining());
+        pageContent = "pages/dynamic.html".equals(path.toString()) ?
                         buildContentFromQuery(requested, htmlString) :
                         htmlString;
     }

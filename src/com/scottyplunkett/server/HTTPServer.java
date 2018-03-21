@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 class HTTPServer {
-
     public static void main() throws IOException {
         main(new String[]{"5000"});
     }
@@ -16,12 +15,13 @@ class HTTPServer {
     }
 
     private static void run(int port) throws IOException {
+        DocumentTags tags = new DocumentTags();
         ServerSocket internalConnection = connect(port);
         while (!internalConnection.isClosed()) {
             Socket connection = internalConnection.accept();
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            serve(connection, in, out);
+            serve(connection, in, out, tags);
         }
     }
 
@@ -35,10 +35,12 @@ class HTTPServer {
 
     private static void serve(Socket socket,
                               BufferedReader in,
-                              BufferedWriter out) throws IOException {
+                              BufferedWriter out,
+                              DocumentTags tags) throws IOException {
         HTTPRequest request = new HTTPRequest(in);
-        String resourceRequested = request.getRequestLine();
-        String response = new HTTPResponse(resourceRequested).get();
+        String response = request.getEtag() == null ?
+                new HTTPResponse(request.getRequestLine()).get() :
+                new TaggedDocumentHTTPResponse(request, tags).get();
         out.write(response);
         out.flush();
         System.err.println("Client served…");

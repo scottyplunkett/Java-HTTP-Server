@@ -37,6 +37,12 @@ enum HTTPResponseCode {
 
     public static int encode(String requested) {
         switch (requested) {
+//            case "/patch-content.txt" : return
+//            response codes needs the full request, or the request plus the etag in the case it
+//            is a patch request
+//            if it is a patch request
+//            check the etag against a document state object
+//            return either 200 or 204
             case "/redirect": return 302;
             case "/foobar": return 404;
             case "/coffee": return 418;
