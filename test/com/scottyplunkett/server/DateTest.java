@@ -13,10 +13,10 @@ class DateTest {
 
     @Test
     void getDate() {
-        Calendar calendar = Calendar.getInstance();
         String format = "EEE, dd MMM yyyy HH:mm:ss z";
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Calendar calendar = Calendar.getInstance();
         String expectedDate = dateFormat.format(calendar.getTime());
         String actualDate = Date.getDate();
         assertEquals(expectedDate, actualDate);
