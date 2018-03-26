@@ -2,9 +2,6 @@ package com.scottyplunkett.server;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 class DirectoryContent {
     private String directoryContent;
@@ -12,11 +9,8 @@ class DirectoryContent {
     DirectoryContent(Path path){
         String directory = String.valueOf(path);
         String content = "";
-        File[] files = new File(directory).listFiles();
-        List<String> names =  Arrays.asList(files).parallelStream()
-                                .map(file -> file.getName())
-                                .collect(Collectors.toList());
-        for (String name : names) {
+        String[] files = new File(directory).list();
+        for (String name : files) {
             String linkToFile = "<a href=\"" + "/" + name + "\">" + name + "</a><br>";
             content += linkToFile;
         }
