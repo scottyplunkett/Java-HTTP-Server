@@ -3,19 +3,26 @@ package com.scottyplunkett.server;
 import java.io.IOException;
 
 class HTTPResponse {
+    private HTTPRequest request;
     private String responseContent;
 
-    HTTPResponse(String requested) throws IOException {
-        this(requested, Date.getDate());
+    HTTPResponse(HTTPRequest request) throws IOException {
+        this(request, Date.getDate());
     }
 
-    HTTPResponse(String requested, String date) throws IOException {
-        String route = Parser.findRequestedRoute(requested);
-        int encoded = HTTPResponseCode.encode(route);
-        String responseCode = HTTPResponseCode.retrieve(encoded);
-        HTTPResponseHeaders responseHeaders = setHeaders(requested, date, responseCode);
-        HTTPResponseBody responseBody = new HTTPResponseBody(requested);
-        responseContent = responseHeaders.get() + "\r\n" + responseBody.get();
+    HTTPResponse(HTTPRequest request, String date) throws IOException {
+        String requestLine = request.getRequestLine();
+        if("/patch-content.txt".equals(requestLine.split("\\s")[1])) {
+          PatchContentResponse patchContentResponse = new PatchContentResponse(request, date);
+          responseContent = patchContentResponse.get();
+        } else {
+            String route = Parser.findRequestedRoute(requestLine);
+            int encoded = HTTPResponseCode.encode(route);
+            String responseCode = HTTPResponseCode.retrieve(encoded);
+            HTTPResponseHeaders responseHeaders = setHeaders(requestLine, date, responseCode);
+            HTTPResponseBody responseBody = new HTTPResponseBody(requestLine);
+            responseContent = responseHeaders.get() + "\r\n" + responseBody.get();
+        }
     }
 
     private HTTPResponseHeaders setHeaders(String requested, String date, String responseCode) {
@@ -32,4 +39,5 @@ class HTTPResponse {
     String get() {
         return responseContent;
     }
+
 }
