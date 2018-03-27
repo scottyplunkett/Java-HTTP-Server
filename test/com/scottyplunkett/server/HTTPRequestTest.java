@@ -11,9 +11,7 @@ class HTTPRequestTest {
     @Test
     void getRequestLine() throws IOException {
         InputStream stream = new ByteArrayInputStream("requestLine\r\nline2\r\nline3\r\nline4".getBytes());
-        InputStreamReader feed = new InputStreamReader(stream);
-        BufferedReader in = new BufferedReader(feed);
-        HTTPRequest request = new HTTPRequest(in);
+        HTTPRequest request = new HTTPRequest(stream);
         assertEquals("requestLine", request.getRequestLine());
     }
 }
