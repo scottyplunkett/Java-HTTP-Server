@@ -7,17 +7,21 @@ class Cycler implements Runnable {
     private Socket socket;
     private InputStream in;
     private OutputStream out;
+    private HTTPRequest request;
+    private HTTPResponse response;
+    private byte[] packet;
 
-    Cycler(Socket socket, InputStream in, OutputStream out) throws IOException {
-        this.socket = socket;
-        this.in = in;
-        this.out = out;
+    Cycler(Socket connection, InputStream input, OutputStream output) throws IOException {
+        socket = connection;
+        in = input;
+        out = output;
+        request = new HTTPRequest(in);
+        response = new HTTPResponse(request);
+        packet = response.get();
     }
 
     private void invoke() throws IOException {
-        HTTPRequest request = new HTTPRequest(in);
-        byte[] response = new HTTPResponse(request).get();
-        out.write(response);
+        out.write(packet);
         out.flush();
         System.err.println("Client served…");
         out.close();

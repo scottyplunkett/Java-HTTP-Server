@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
+import static com.scottyplunkett.server.Combiner.combineByteArrays;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class HTTPResponseTest {
@@ -89,4 +91,41 @@ class HTTPResponseTest {
         String expectedResponse = expectedHeaders + "\r\n";
         assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
     }
+
+    @Test
+    void getResponseToRequestForImageJPEG() throws IOException {
+        String requestGetImageContent = "GET /image.jpeg HTTP/1.1\r\nline 4\r\nline3\r\n";
+        InputStream in = new ByteArrayInputStream(requestGetImageContent.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        Path imagePath = Paths.get("public/image.jpeg");
+        byte[] body = Files.readAllBytes(imagePath);
+        byte[] head = (new HTTPResponseHeaders("200 OK", "image/jpeg", "bla").get() + "\r\n").getBytes();
+        byte[] expectedResponse = combineByteArrays(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
+
+    @Test
+    void getResponseToRequestForImageGIF() throws IOException {
+        String requestGetImageContent = "GET /image.gif HTTP/1.1\r\nline 4\r\nline3\r\n";
+        InputStream in = new ByteArrayInputStream(requestGetImageContent.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        Path imagePath = Paths.get("public/image.gif");
+        byte[] body = Files.readAllBytes(imagePath);
+        byte[] head = (new HTTPResponseHeaders("200 OK", "image/gif", "bla").get() + "\r\n").getBytes();
+        byte[] expectedResponse = combineByteArrays(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
+
+    @Test
+    void getResponseToRequestForImagePNG() throws IOException {
+        String requestGetImageContent = "GET /image.png HTTP/1.1\r\nline 4\r\nline3\r\n";
+        InputStream in = new ByteArrayInputStream(requestGetImageContent.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        Path imagePath = Paths.get("public/image.png");
+        byte[] body = Files.readAllBytes(imagePath);
+        byte[] head = (new HTTPResponseHeaders("200 OK", "image/png", "bla").get() + "\r\n").getBytes();
+        byte[] expectedResponse = combineByteArrays(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
+
 }

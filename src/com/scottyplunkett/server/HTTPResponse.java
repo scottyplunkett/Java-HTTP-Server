@@ -5,6 +5,8 @@ import java.io.IOException;
 class HTTPResponse {
     private HTTPRequest httpRequest;
     private byte[] responseContent;
+    private HTTPResponseHeaders headers;
+    private HTTPResponseBody body;
 
     HTTPResponse(HTTPRequest request) throws IOException {
         this(request, Date.getDate());
@@ -15,13 +17,14 @@ class HTTPResponse {
         String route = Parser.findRequestedRoute(requestLine);
         int encoded = HTTPResponseCode.encode(route);
         String responseCode = HTTPResponseCode.retrieve(encoded);
-        if("/patch-content.txt".equals(requestLine.split("\\s")[1])) {
-            PatchContentResponse patchContentResponse = new PatchContentResponse(request, date);
-            responseContent = patchContentResponse.get().getBytes();
+        if(requestLine.contains("PATCH")) {
+            responseContent = new PatchContentResponse(request, date).get().getBytes();
+        } else if(requestLine.contains("image")) {
+            responseContent = new ImageContent(requestLine, date).get();
         } else {
-            HTTPResponseHeaders responseHeaders = setHeaders(requestLine, date, responseCode);
-            HTTPResponseBody responseBody = new HTTPResponseBody(requestLine);
-            String responseString = responseHeaders.get() + "\r\n" + responseBody.get();
+            headers = setHeaders(requestLine, date, responseCode);
+            body = new HTTPResponseBody(requestLine);
+            String responseString = headers.get() + "\r\n" + body.get();
             responseContent = responseString.getBytes();
         }
     }
