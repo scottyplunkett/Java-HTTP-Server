@@ -8,7 +8,7 @@ class Cycler implements Runnable {
     private InputStream in;
     private OutputStream out;
 
-    Cycler(Socket socket, InputStream in, OutputStream out) {
+    Cycler(Socket socket, InputStream in, OutputStream out) throws IOException {
         this.socket = socket;
         this.in = in;
         this.out = out;
