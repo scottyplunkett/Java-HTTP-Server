@@ -37,8 +37,7 @@ class HTTPServer {
                               BufferedReader in,
                               BufferedWriter out) throws IOException {
         HTTPRequest request = new HTTPRequest(in);
-        String resourceRequested = request.getRequestLine();
-        String response = new HTTPResponse(resourceRequested).get();
+        String response = new HTTPResponse(request).get();
         out.write(response);
         out.flush();
         System.err.println("Client served…");
