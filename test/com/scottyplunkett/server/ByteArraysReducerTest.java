@@ -5,9 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ByteArraysReducerTest {
-
     @Test
-    void combineByteArrays() {
+    void merge() {
         String firstArray = "first array";
         String secondArray = "second array";
         byte[] expectedCombine = (firstArray + secondArray).getBytes();
