@@ -20,11 +20,11 @@ class PatchContentResponse {
         String requestLine = request.getRequestLine();
         String requestMethod = requestLine.split("\\s")[0];
         if("PATCH".equals(requestMethod)) {
-            headers = "HTTP/1.1 204\r\nDate: " + date + "\r\nContent-Type: text/html\r\n";
+            headers = "HTTP/1.1 204\r\nDate: " + date + "\r\nContent-Type: text/plain\r\n";
             body = "";
             writeToFile(request.getEtag());
         } else {
-            headers = "HTTP/1.1 200 OK\r\nDate: " + date + "\r\nContent-Type: text/html\r\n";
+            headers = "HTTP/1.1 200 OK\r\nDate: " + date + "\r\nContent-Type: text/plain\r\n";
             body = new HTTPResponseBody(request.getRequestLine()).get();
         }
         responseContent = headers + "\r\n" + body;

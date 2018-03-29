@@ -99,4 +99,10 @@ class RouterTest {
         Path expectedPath = Paths.get("public/image.png");
         assertEquals(expectedPath, Router.route("GET /image.png HTTP/1.1"));
     }
+
+    @Test
+    void testRouteForTextFile() {
+        Path expectedPath = Paths.get("public/text-file.txt");
+        assertEquals(expectedPath, Router.route("GET /text-file.txt HTTP/1.1"));
+    }
 }

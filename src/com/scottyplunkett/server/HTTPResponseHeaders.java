@@ -3,21 +3,26 @@ package com.scottyplunkett.server;
 class HTTPResponseHeaders {
     private static final String CRLF = "\r\n";
     private String responseHeadersContent;
+    private String statusLine;
+    private String locationLine;
+    private String dateLine;
+    private String contentTypeLine;
 
     HTTPResponseHeaders(String status, String contentType, String date) {
-        String statusLine = "HTTP/1.1 " + status + CRLF;
-        String locationLine = "Location: /\r\n";
-        String dateLine = "Date: " + date + CRLF;
-        String contentTypeLine = "Content-Type: " + contentType + CRLF;
+        statusLine = "HTTP/1.1 " + status + CRLF;
+        locationLine = "Location: /\r\n";
+        dateLine = "Date: " + date + CRLF;
+        contentTypeLine = "Content-Type: " + contentType + CRLF;
         if ("302 Found".equals(status)) statusLine = statusLine + locationLine;
         responseHeadersContent = statusLine + dateLine + contentTypeLine;
     }
 
     HTTPResponseHeaders(String status, String contentType, String date, String options) {
-        String statusLine = "HTTP/1.1 " + status + CRLF;
-        String optionsLine = "Allow: " + options + CRLF;
-        String dateLine = "Date: " + date + CRLF;
-        String contentTypeLine = "Content-Type: " + contentType + CRLF;
+        String optionsLine;
+        statusLine = "HTTP/1.1 " + status + CRLF;
+        optionsLine = "Allow: " + options + CRLF;
+        dateLine = "Date: " + date + CRLF;
+        contentTypeLine = "Content-Type: " + contentType + CRLF;
         responseHeadersContent = statusLine + optionsLine + dateLine + contentTypeLine;
     }
 

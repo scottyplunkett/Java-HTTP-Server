@@ -1,6 +1,7 @@
 package com.scottyplunkett.server;
 
 import java.io.IOException;
+import java.nio.file.Files;
 
 class HTTPResponse {
     private HTTPRequest httpRequest;
@@ -29,14 +30,15 @@ class HTTPResponse {
         }
     }
 
-    private HTTPResponseHeaders setHeaders(String requested, String date, String responseCode) {
+    private HTTPResponseHeaders setHeaders(String requested, String date, String responseCode) throws IOException {
+        String contentType = Files.probeContentType(Router.route(requested));
         switch (requested) {
             case "OPTIONS /method_options HTTP/1.1" :
-                return new HTTPResponseHeaders(responseCode, "text/html", date, "GET,HEAD,POST,OPTIONS,PUT");
+                return new HTTPResponseHeaders(responseCode, contentType, date, "GET,HEAD,POST,OPTIONS,PUT");
             case "OPTIONS /method_options2 HTTP/1.1" :
-                return new HTTPResponseHeaders(responseCode, "text/html", date, "GET,OPTIONS");
+                return new HTTPResponseHeaders(responseCode, contentType, date, "GET,OPTIONS");
             default:
-                return new HTTPResponseHeaders(responseCode, "text/html", date);
+                return new HTTPResponseHeaders(responseCode, contentType, date);
         }
     }
 
