@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.scottyplunkett.server.Combiner.combineByteArrays;
+import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
 class ImageContent {
     private Path imagePath;
@@ -22,7 +22,7 @@ class ImageContent {
         type = Files.probeContentType(imagePath);
         imageData = Files.readAllBytes(imagePath);
         imageHeaders = (new HTTPResponseHeaders("200 OK", type, date).get() + "\r\n").getBytes();
-        response = combineByteArrays(imageData, imageHeaders);
+        response = merge(imageData, imageHeaders);
     }
 
     byte[] get() {

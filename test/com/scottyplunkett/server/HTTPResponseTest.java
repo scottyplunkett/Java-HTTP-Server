@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-import static com.scottyplunkett.server.Combiner.combineByteArrays;
+import static com.scottyplunkett.server.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class HTTPResponseTest {
@@ -100,7 +100,7 @@ class HTTPResponseTest {
         Path imagePath = Paths.get("public/image.jpeg");
         byte[] body = Files.readAllBytes(imagePath);
         byte[] head = (new HTTPResponseHeaders("200 OK", "image/jpeg", "bla").get() + "\r\n").getBytes();
-        byte[] expectedResponse = combineByteArrays(body, head);
+        byte[] expectedResponse = merge(body, head);
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
 
@@ -112,7 +112,7 @@ class HTTPResponseTest {
         Path imagePath = Paths.get("public/image.gif");
         byte[] body = Files.readAllBytes(imagePath);
         byte[] head = (new HTTPResponseHeaders("200 OK", "image/gif", "bla").get() + "\r\n").getBytes();
-        byte[] expectedResponse = combineByteArrays(body, head);
+        byte[] expectedResponse = merge(body, head);
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
 
@@ -124,7 +124,7 @@ class HTTPResponseTest {
         Path imagePath = Paths.get("public/image.png");
         byte[] body = Files.readAllBytes(imagePath);
         byte[] head = (new HTTPResponseHeaders("200 OK", "image/png", "bla").get() + "\r\n").getBytes();
-        byte[] expectedResponse = combineByteArrays(body, head);
+        byte[] expectedResponse = merge(body, head);
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
 
