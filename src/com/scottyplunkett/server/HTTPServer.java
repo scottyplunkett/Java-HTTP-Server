@@ -1,7 +1,10 @@
 package com.scottyplunkett.server;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,7 +18,8 @@ class HTTPServer {
 
     public static void main(String[] args) throws IOException {
         int port = Integer.parseInt(args[0]);
-        new HTTPServer(new ServerSocket(port), Executors.newFixedThreadPool(10)).start();;
+        ServerSocket serverSocket = new ServerSocket(port);
+        new HTTPServer(serverSocket, Executors.newFixedThreadPool(10)).start();
     }
 
     HTTPServer(ServerSocket serverSocket, ExecutorService executorService) throws IOException {
@@ -25,7 +29,10 @@ class HTTPServer {
 
     void start() throws IOException {
         while (!internalConnection.isClosed()) {
-            pool.execute(new RequestResponseCycle(internalConnection.accept()));
+            Socket connection = internalConnection.accept();
+            InputStream in = connection.getInputStream();
+            OutputStream out = connection.getOutputStream();
+            pool.execute(new RequestResponseCycle(connection, in, out));
         }
     }
 

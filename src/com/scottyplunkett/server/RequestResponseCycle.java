@@ -13,10 +13,6 @@ class RequestResponseCycle implements Runnable {
     private HTTPResponse response;
     private byte[] message;
 
-    RequestResponseCycle(Socket connection) throws IOException {
-        this(connection, connection.getInputStream(), connection.getOutputStream());
-    }
-
     RequestResponseCycle(Socket connection, InputStream input, OutputStream output) throws IOException {
         socket = connection;
         in = input;
