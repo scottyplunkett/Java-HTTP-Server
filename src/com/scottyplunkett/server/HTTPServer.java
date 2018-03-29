@@ -1,49 +1,44 @@
 package com.scottyplunkett.server;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 class HTTPServer {
+    private ExecutorService pool;
+    private ServerSocket internalConnection;
 
     public static void main() throws IOException {
         main(new String[]{"5000"});
     }
 
     public static void main(String[] args) throws IOException {
-            int port = Integer.parseInt(args[0]);
-            run(port);
+        int port = Integer.parseInt(args[0]);
+        ServerSocket serverSocket = new ServerSocket(port);
+        int processingCoresAvailable = Runtime.getRuntime().availableProcessors();
+        new HTTPServer(serverSocket, Executors.newFixedThreadPool(processingCoresAvailable)).start();
     }
 
-    private static void run(int port) throws IOException {
-        ServerSocket internalConnection = connect(port);
+    HTTPServer(ServerSocket serverSocket, ExecutorService executorService) throws IOException {
+        internalConnection = serverSocket;
+        pool = executorService;
+    }
+
+    void start() throws IOException {
         while (!internalConnection.isClosed()) {
             Socket connection = internalConnection.accept();
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-            serve(connection, in, out);
+            InputStream in = connection.getInputStream();
+            OutputStream out = connection.getOutputStream();
+            pool.execute(new RequestResponseCycle(connection, in, out));
         }
     }
 
-    static ServerSocket connect(int portNumber) throws IOException {
-        return new ServerSocket(portNumber);
-    }
-
-    void close(ServerSocket serverSocket) throws IOException {
-        serverSocket.close();
-    }
-
-    private static void serve(Socket socket,
-                              BufferedReader in,
-                              BufferedWriter out) throws IOException {
-        HTTPRequest request = new HTTPRequest(in);
-        String response = new HTTPResponse(request).get();
-        out.write(response);
-        out.flush();
-        System.err.println("Client served…");
-        out.close();
-        in.close();
-        socket.close();
-        System.err.println("Connection Terminated!");
+    void stop() throws IOException {
+        pool.shutdown();
+        internalConnection.close();
     }
 }

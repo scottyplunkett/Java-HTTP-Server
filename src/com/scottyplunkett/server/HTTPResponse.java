@@ -3,8 +3,10 @@ package com.scottyplunkett.server;
 import java.io.IOException;
 
 class HTTPResponse {
-    private HTTPRequest request;
-    private String responseContent;
+    private HTTPRequest httpRequest;
+    private byte[] responseContent;
+    private HTTPResponseHeaders headers;
+    private HTTPResponseBody body;
 
     HTTPResponse(HTTPRequest request) throws IOException {
         this(request, Date.getDate());
@@ -12,16 +14,18 @@ class HTTPResponse {
 
     HTTPResponse(HTTPRequest request, String date) throws IOException {
         String requestLine = request.getRequestLine();
-        if("/patch-content.txt".equals(requestLine.split("\\s")[1])) {
-          PatchContentResponse patchContentResponse = new PatchContentResponse(request, date);
-          responseContent = patchContentResponse.get();
+        String route = Parser.findRequestedRoute(requestLine);
+        int encoded = HTTPResponseCode.encode(route);
+        String responseCode = HTTPResponseCode.retrieve(encoded);
+        if(requestLine.contains("PATCH")) {
+            responseContent = new PatchContentResponse(request, date).get().getBytes();
+        } else if(requestLine.contains("image")) {
+            responseContent = new ImageContent(requestLine, date).get();
         } else {
-            String route = Parser.findRequestedRoute(requestLine);
-            int encoded = HTTPResponseCode.encode(route);
-            String responseCode = HTTPResponseCode.retrieve(encoded);
-            HTTPResponseHeaders responseHeaders = setHeaders(requestLine, date, responseCode);
-            HTTPResponseBody responseBody = new HTTPResponseBody(requestLine);
-            responseContent = responseHeaders.get() + "\r\n" + responseBody.get();
+            headers = setHeaders(requestLine, date, responseCode);
+            body = new HTTPResponseBody(requestLine);
+            String responseString = headers.get() + "\r\n" + body.get();
+            responseContent = responseString.getBytes();
         }
     }
 
@@ -36,8 +40,7 @@ class HTTPResponse {
         }
     }
 
-    String get() {
+    byte[] get() {
         return responseContent;
     }
-
 }

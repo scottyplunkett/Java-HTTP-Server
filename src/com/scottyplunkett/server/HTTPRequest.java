@@ -2,6 +2,8 @@ package com.scottyplunkett.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -10,28 +12,30 @@ class HTTPRequest {
     private String requestLine;
     private String eTag;
     private String body;
+    private BufferedReader reader;
 
-    HTTPRequest(BufferedReader in) throws IOException {
+    HTTPRequest(InputStream in) throws IOException {
         requestContent = new ArrayList<>();
+        reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder fullRequest = new StringBuilder();
         int nextChar;
-        while ((nextChar = in.read()) != -1) {
+        while ((nextChar = reader.read()) != -1) {
             fullRequest.append((char)nextChar);
-            if (!in.ready()) {
+            if (!reader.ready()) {
                 break;
             }
         }
-        Collections.addAll(requestContent, fullRequest.toString().split("\r\n"));
+        String requestString = fullRequest.toString();
+        Collections.addAll(requestContent, requestString.split("\r\n"));
         requestLine = requestContent.get(0);
         setEtag();
         setBody();
     }
 
     private void setEtag() {
-        String secondLineHeader = requestContent.get(1).split("\\s")[0];
-        if ("If-Match:".equals(secondLineHeader) || "If-None-Match:".equals(secondLineHeader)) {
-            eTag = requestContent.get(1).split("\\s")[1];
-        }
+        requestContent.forEach(line -> {
+           if (line.startsWith("If-Match") || line.startsWith("If-None-Match")) eTag = line.split("\\s")[1];
+        });
     }
 
     private void setBody() {

@@ -25,9 +25,7 @@ class PageContent {
         String request = requestLine.split("\\s")[1];
         Query query = new Query(request);
         String[] params = query.getParams();
-        for(String param : params){
-            content = content + ("<p>" + param + "</p><br>");
-        }
+        for(String param : params) content = content + ("<p>" + param + "</p><br>");
         return insertHTML(htmlString, content);
     }
 

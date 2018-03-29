@@ -81,4 +81,22 @@ class RouterTest {
         Path expectedPath = Paths.get("public/patch-content.txt");
         assertEquals(expectedPath, Router.route("PATCH /patch-content.txt HTTP/1.1"));
     }
+
+    @Test
+    void testRouteForImageJPEG() {
+        Path expectedPath = Paths.get("public/image.jpeg");
+        assertEquals(expectedPath, Router.route("GET /image.jpeg HTTP/1.1"));
+    }
+
+    @Test
+    void testRouteForImageGIF() {
+        Path expectedPath = Paths.get("public/image.gif");
+        assertEquals(expectedPath, Router.route("GET /image.gif HTTP/1.1"));
+    }
+
+    @Test
+    void testRouteForImagePNG() {
+        Path expectedPath = Paths.get("public/image.png");
+        assertEquals(expectedPath, Router.route("GET /image.png HTTP/1.1"));
+    }
 }

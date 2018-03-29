@@ -16,6 +16,9 @@ class Router {
             case "GET /josh HTTP/1.1" : return Paths.get("pages/josh.html");
             case "GET /file1 HTTP/1.1" : return Paths.get("pages/file1");
             case "GET /coffee HTTP/1.1" : return Paths.get("pages/418.html");
+            case "GET /image.jpeg HTTP/1.1" : return Paths.get("public/image.jpeg");
+            case "GET /image.gif HTTP/1.1" : return Paths.get("public/image.gif");
+            case "GET /image.png HTTP/1.1" : return Paths.get("public/image.png");
             case "GET /patch-content.txt HTTP/1.1" : return Paths.get("public/patch-content.txt");
             case "PATCH /patch-content.txt HTTP/1.1" : return Paths.get("public/patch-content.txt");
             case "OPTIONS /method_options HTTP/1.1" : return Paths.get("pages/method_options.html");
