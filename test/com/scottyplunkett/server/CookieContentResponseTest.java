@@ -10,6 +10,7 @@ import static com.scottyplunkett.server.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class CookieContentResponseTest {
+
     @Test
     void get() throws IOException {
         String requestCookieWithChocolate = "GET /cookie?type=chocolate HTTP/1.1\r\nline 4\r\nline3\r\n";
