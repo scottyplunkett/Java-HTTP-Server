@@ -13,14 +13,17 @@ class HTTPResponse {
     }
 
     HTTPResponse(HTTPRequest request, String date) throws IOException {
-        String requestLine = request.getRequestLine();
+        httpRequest = request;
+        String requestLine = httpRequest.getRequestLine();
         String route = Parser.findRequestedRoute(requestLine);
         int encoded = HTTPResponseCode.encode(route);
         String responseCode = HTTPResponseCode.retrieve(encoded);
         if(requestLine.contains("PATCH")) {
             responseContent = new PatchContentResponse(request, date).get().getBytes();
         } else if(requestLine.contains("image")) {
-            responseContent = new ImageContent(requestLine, date).get();
+            responseContent = new ImageContentResponse(requestLine, date).get();
+        } else if(requestLine.contains("cookie")) {
+            responseContent = new CookieContentResponse(request, date).get();
         } else {
             headers = setHeaders(requestLine, date, responseCode);
             body = new HTTPResponseBody(requestLine);
@@ -29,8 +32,8 @@ class HTTPResponse {
         }
     }
 
-    private HTTPResponseHeaders setHeaders(String requested, String date, String responseCode) {
-        switch (requested) {
+    private HTTPResponseHeaders setHeaders(String requestLine, String date, String responseCode) {
+        switch (requestLine) {
             case "OPTIONS /method_options HTTP/1.1" :
                 return new HTTPResponseHeaders(responseCode, "text/html", date, "GET,HEAD,POST,OPTIONS,PUT");
             case "OPTIONS /method_options2 HTTP/1.1" :

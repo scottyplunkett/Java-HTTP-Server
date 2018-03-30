@@ -11,6 +11,7 @@ class HTTPRequest {
     private ArrayList<String> requestContent;
     private String requestLine;
     private String eTag;
+    public  String cookie;
     private String body;
     private BufferedReader reader;
 
@@ -29,12 +30,19 @@ class HTTPRequest {
         Collections.addAll(requestContent, requestString.split("\r\n"));
         requestLine = requestContent.get(0);
         setEtag();
+        setCookie();
         setBody();
     }
 
     private void setEtag() {
         requestContent.forEach(line -> {
            if (line.startsWith("If-Match") || line.startsWith("If-None-Match")) eTag = line.split("\\s")[1];
+        });
+    }
+
+    private void setCookie() {
+        requestContent.forEach(line -> {
+            if (line.startsWith("Cookie")) cookie = line.split("\\s")[1];
         });
     }
 
@@ -53,6 +61,10 @@ class HTTPRequest {
 
     String getBody() {
         return body;
+    }
+
+    String getCookie() {
+        return cookie;
     }
 }
 

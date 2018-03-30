@@ -5,8 +5,11 @@ import java.nio.file.Paths;
 
 class Router {
     public static Path route(String requestLine) {
-        return hasParameters(requestLine) ? Paths.get("pages/dynamic.html") : walkRoutes(requestLine);
+        if (hasParameters(requestLine))
+            return containsCookie(requestLine) ? Paths.get("pages/cookie.html") : Paths.get("pages/dynamic.html");
+        else return walkRoutes(requestLine);
     }
+
 
     private static Path walkRoutes(String requestLine) {
         switch (requestLine) {
@@ -25,6 +28,10 @@ class Router {
             case "OPTIONS /method_options2 HTTP/1.1" : return Paths.get("pages/method_options.html");
             default : return Paths.get("pages/404.html");
         }
+    }
+
+    private static boolean containsCookie(String requestLine) {
+        return requestLine.contains("cookie");
     }
 
     private static boolean hasParameters(String requestLine) {
