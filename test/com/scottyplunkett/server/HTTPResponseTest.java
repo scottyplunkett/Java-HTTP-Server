@@ -76,7 +76,7 @@ class HTTPResponseTest {
         String requestGetPatchContent = "GET /patch-content.txt HTTP/1.1\r\nline2\nline3\n";
         InputStream in = new ByteArrayInputStream(requestGetPatchContent.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-        String expectedHeaders = "HTTP/1.1 200 OK\r\nDate: bla\r\nContent-Type: text/html\r\n";
+        String expectedHeaders = "HTTP/1.1 200 OK\r\nDate: bla\r\nContent-Type: text/plain\r\n";
         String expectedResponse = expectedHeaders + "\r\n" + "default content";
         assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
     }
@@ -87,7 +87,7 @@ class HTTPResponseTest {
                 "PATCH /patch-content.txt HTTP/1.1\r\nIf-Match: 5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0\r\nline3\r\n";
         InputStream in = new ByteArrayInputStream(requestGetPatchContent.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-        String expectedHeaders = "HTTP/1.1 204\r\nDate: bla\r\nContent-Type: text/html\r\n";
+        String expectedHeaders = "HTTP/1.1 204\r\nDate: bla\r\nContent-Type: text/plain\r\n";
         String expectedResponse = expectedHeaders + "\r\n";
         assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
     }
@@ -128,4 +128,15 @@ class HTTPResponseTest {
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
 
+    @Test
+    void getResponseToRequestForTextFileHasCorrectMediaType() throws IOException {
+        String requestTextFile = "GET /text-file.txt HTTP/1.1\r\nline 4\r\nline3\r\n";
+        InputStream in = new ByteArrayInputStream(requestTextFile.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        Path textFilePath = Paths.get("public/text-file.txt");
+        byte[] body = Files.readAllBytes(textFilePath);
+        byte[] head = (new HTTPResponseHeaders("200 OK", "text/plain", "bla").get() + "\r\n").getBytes();
+        byte[] expectedResponse = merge(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
 }

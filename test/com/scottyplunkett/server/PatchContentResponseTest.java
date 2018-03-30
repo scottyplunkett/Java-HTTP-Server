@@ -15,7 +15,7 @@ class PatchContentResponseTest {
         String requestGetPatchContent = "GET /patch-content.txt HTTP/1.1\r\nline2\nline3\n";
         InputStream in = new ByteArrayInputStream(requestGetPatchContent.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-        String expectedHeaders = "HTTP/1.1 200 OK\r\nDate: bla\r\nContent-Type: text/html\r\n";
+        String expectedHeaders = "HTTP/1.1 200 OK\r\nDate: bla\r\nContent-Type: text/plain\r\n";
         assertEquals(expectedHeaders + "\r\n" + "default content", new PatchContentResponse(request, "bla").get());
     }
 
@@ -25,7 +25,7 @@ class PatchContentResponseTest {
                 "PATCH /patch-content.txt HTTP/1.1\r\nIf-Match: 5c36acad75b78b82be6d9cbbd6143ab7e0cc04b0\r\nline3\r\n";
         InputStream in = new ByteArrayInputStream(requestGetPatchContent.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-        String expectedHeaders = "HTTP/1.1 204\r\nDate: bla\r\nContent-Type: text/html\r\n";
+        String expectedHeaders = "HTTP/1.1 204\r\nDate: bla\r\nContent-Type: text/plain\r\n";
         assertEquals(expectedHeaders + "\r\n", new PatchContentResponse(request, "bla").get());
     }
 

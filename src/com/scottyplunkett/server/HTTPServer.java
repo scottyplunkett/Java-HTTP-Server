@@ -23,7 +23,7 @@ class HTTPServer {
         new HTTPServer(serverSocket, Executors.newFixedThreadPool(processingCoresAvailable)).start();
     }
 
-    HTTPServer(ServerSocket serverSocket, ExecutorService executorService) throws IOException {
+    HTTPServer(ServerSocket serverSocket, ExecutorService executorService) {
         internalConnection = serverSocket;
         pool = executorService;
     }
