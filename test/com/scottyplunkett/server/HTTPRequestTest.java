@@ -28,6 +28,7 @@ class HTTPRequestTest {
         HTTPRequest request = new HTTPRequest(stream);
         assertEquals("chocolate", request.getCookie());
     }
+<<<<<<< HEAD
 
     @Test
     void getAuthorization() throws IOException {
@@ -35,4 +36,6 @@ class HTTPRequestTest {
         HTTPRequest request = new HTTPRequest(stream);
         assertEquals("Basic YWRtaW46aHVudGVyMg==", request.getAuthorization());
     }
+=======
+>>>>>>> WIP: Added Cookie Content Response & getCookie to HTTPRequest
 }
