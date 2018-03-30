@@ -139,4 +139,15 @@ class HTTPResponseTest {
         byte[] expectedResponse = merge(body, head);
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
+
+    @Test
+    void getResponseToRequestForCookieWithChocolateParam() throws IOException {
+        String requestCookieWithChocolate = "GET /cookie?type=chocolate HTTP/1.1\r\nline 4\r\nline3\r\n";
+        InputStream in = new ByteArrayInputStream(requestCookieWithChocolate.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        byte[] body = "Eat".getBytes();
+        byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "Set-Cookie: chocolate" + "\r\n\r\n").getBytes();
+        byte[] expectedResponse = merge(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
 }
