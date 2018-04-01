@@ -150,4 +150,16 @@ class HTTPResponseTest {
         byte[] expectedResponse = merge(body, head);
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
+
+    @Test
+    void getLogsWithoutBasicAuthReturns401ResponseCode() throws IOException {
+        String requestLogs = "GET /logs HTTP/1.1\r\nline 4\r\nline3\r\n";
+        InputStream in = new ByteArrayInputStream(requestLogs.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        byte[] head = (new HTTPResponseHeaders("401 Unauthorized", "text/html", "bla").get() +
+                                               "WWW-Authenticate: Basic realm=\"Logs\"\r\n\r\n").getBytes();
+        byte[] body = "401 Unauthorized... Probably Above Your Paygrade.".getBytes();
+        byte[] expectedResponse = merge(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
 }

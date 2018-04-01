@@ -13,6 +13,7 @@ class RequestResponseCycleTest {
     private MockCycle cycle;
 
     class MockCycle extends RequestResponseCycle {
+        boolean loggedRequest;
         boolean messageSent;
         boolean runError;
         boolean completed;
@@ -26,6 +27,7 @@ class RequestResponseCycleTest {
             try {
                 invoke();
                 messageSent = true;
+                loggedRequest = true;
             } catch (IOException e) {
                 e.printStackTrace();
                 runError = true;
@@ -50,6 +52,11 @@ class RequestResponseCycleTest {
     @Test
     void invocationSendsMessageSuccessfully() {
         assertEquals(true, cycle.messageSent);
+    }
+
+    @Test
+    void logsRequest() {
+        assertEquals(true, cycle.loggedRequest);
     }
 
     @Test
