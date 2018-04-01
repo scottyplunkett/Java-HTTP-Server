@@ -24,8 +24,9 @@ class HTTPResponse {
         } else if(requestLine.contains("image")) {
             responseContent = new ImageContentResponse(requestLine, date).get();
         } else if(requestLine.contains("cookie")) {
-            CookieContentResponse cookieResponse = new CookieContentResponse(request, date);
-            responseContent = cookieResponse.get();
+            responseContent = new CookieContentResponse(request, date).get();
+        } else if(requestLine.contains("logs")) {
+            responseContent = new LogContentResponse(request, date).get();
         } else {
             headers = setHeaders(requestLine, date, responseCode);
             body = new HTTPResponseBody(requestLine);
