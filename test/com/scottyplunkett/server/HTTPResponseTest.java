@@ -162,4 +162,27 @@ class HTTPResponseTest {
         byte[] expectedResponse = merge(body, head);
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
+
+    @Test
+    void getResponseToPostFormRequestWritesToForm() throws IOException {
+        String requestPostToForm = "POST /form HTTP/1.1\r\nContent-Length: 11\r\nline3\r\n\r\ndata=fatcat";
+        InputStream in = new ByteArrayInputStream(requestPostToForm.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
+        byte[] body = "<h1>data=fatcat</h1>".getBytes();
+        byte[] expectedResponse = merge(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        Files.write(Paths.get("pages/form.html"), "".getBytes());
+    }
+
+    @Test
+    void getResponseToGetForm() throws IOException {
+        String requestGetForm = "GET /form HTTP/1.1\r\nline2\r\nline3\r\n\r\n";
+        InputStream in = new ByteArrayInputStream(requestGetForm.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
+        byte[] body = "".getBytes();
+        byte[] expectedResponse = merge(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
 }
