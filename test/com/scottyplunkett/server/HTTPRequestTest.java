@@ -2,7 +2,9 @@ package com.scottyplunkett.server;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,14 +30,39 @@ class HTTPRequestTest {
         HTTPRequest request = new HTTPRequest(stream);
         assertEquals("chocolate", request.getCookie());
     }
-<<<<<<< HEAD
 
     @Test
     void getAuthorization() throws IOException {
-        InputStream stream = new ByteArrayInputStream("GET /logs HTTP/1.1\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nline3\r\nline4".getBytes());
+        String requestWithAuth = "GET /logs HTTP/1.1\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nline3\r\nline4";
+        InputStream stream = new ByteArrayInputStream(requestWithAuth.getBytes());
         HTTPRequest request = new HTTPRequest(stream);
         assertEquals("Basic YWRtaW46aHVudGVyMg==", request.getAuthorization());
     }
-=======
->>>>>>> WIP: Added Cookie Content Response & getCookie to HTTPRequest
+
+    @Test
+    void getRange() throws IOException {
+        String requestWithRange = "GET /partial_content.txt HTTP/1.1\r\nRange: bytes=0-4\r\nline3\r\n\r\n";
+        InputStream stream = new ByteArrayInputStream(requestWithRange.getBytes());
+        HTTPRequest request = new HTTPRequest(stream);
+        String expectedRange = "0-4";
+        assertEquals(expectedRange, request.getRange());
+    }
+
+    @Test
+    void getRangeWhenOnlyRangeEndPresent() throws IOException {
+        String requestWithRange = "GET /partial_content.txt HTTP/1.1\r\nRange: bytes=-6\r\nline3\r\n\r\n";
+        InputStream stream = new ByteArrayInputStream(requestWithRange.getBytes());
+        HTTPRequest request = new HTTPRequest(stream);
+        String expectedRange = "-6";
+        assertEquals(expectedRange, request.getRange());
+    }
+
+    @Test
+    void getRangeWhenOnlyRangeStartPresent() throws IOException {
+        String requestWithRange = "GET /partial_content.txt HTTP/1.1\r\nRange: bytes=4-\r\nline3\r\n\r\n";
+        InputStream stream = new ByteArrayInputStream(requestWithRange.getBytes());
+        HTTPRequest request = new HTTPRequest(stream);
+        String expectedRange = "4-";
+        assertEquals(expectedRange, request.getRange());
+    }
 }
