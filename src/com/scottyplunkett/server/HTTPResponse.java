@@ -29,6 +29,8 @@ class HTTPResponse {
             responseContent = new LogContentResponse(request, date).get();
         } else if(requestLine.contains("form")) {
             responseContent = new FormContentResponse(request, date).get();
+        } else if(requestLine.contains("partial_content")) {
+            responseContent = new PartialContentResponse(request, date).get();
         } else {
             headers = setHeaders(requestLine, date, responseCode);
             body = new HTTPResponseBody(requestLine);
