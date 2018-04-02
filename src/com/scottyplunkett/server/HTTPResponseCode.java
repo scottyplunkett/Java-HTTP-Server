@@ -35,43 +35,13 @@ enum HTTPResponseCode {
         return status;
     }
 
-    public static int encode(String requestLine) {
-        String route = Parser.findRequestedRoute(requestLine);
-        String method = Parser.findRequestMethod(requestLine);
-        String methodsAllowed = AllowableRoutes.getAllowed(route);
+    public static int encode(String route) {
         switch (route) {
             case "/redirect": return 302;
             case "/foobar": return 404;
             case "/coffee": return 418;
-            default: return methodsAllowed.contains(method) ? 200 : 405;
+            default: return 200;
         }
-    }
-
-
-    private enum AllowableRoutes {
-        FILE1("/file1", "GET"),
-        TEXTFILE("/text-file.txt", "GET");
-
-        private final String allowed;
-        private final String route;
-
-        AllowableRoutes(String requestedRoute, String allowedMethod) {
-            this.route = requestedRoute;
-            this.allowed = allowedMethod;
-        }
-
-        static String getAllowed(String requestedRoute) {
-            String allowable = "";
-            for (AllowableRoutes routes : values()) {
-                if (routes.route == requestedRoute) {
-                    allowable = routes.allowed;
-                }
-            }
-
-            return allowable;
-        }
-
-
     }
 }
 
