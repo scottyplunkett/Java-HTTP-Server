@@ -16,9 +16,6 @@ class HTTPResponse {
     HTTPResponse(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
         String requestLine = httpRequest.getRequestLine();
-        String route = Parser.findRequestedRoute(requestLine);
-        int encoded = HTTPResponseCode.encode(route);
-        String responseCode = HTTPResponseCode.retrieve(encoded);
         if(requestLine.contains("PATCH")) {
             responseContent = new PatchContentResponse(request, date).get().getBytes();
         } else if(requestLine.contains("image")) {
@@ -32,6 +29,8 @@ class HTTPResponse {
         } else if(requestLine.contains("partial_content")) {
             responseContent = new PartialContentResponse(request, date).get();
         } else {
+            int encoded = HTTPResponseCode.encode(requestLine);
+            String responseCode = HTTPResponseCode.retrieve(encoded);
             headers = setHeaders(requestLine, date, responseCode);
             body = new HTTPResponseBody(requestLine);
             String responseString = headers.get() + "\r\n" + body.get();
