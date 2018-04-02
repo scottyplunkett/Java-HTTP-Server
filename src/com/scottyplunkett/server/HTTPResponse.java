@@ -16,6 +16,8 @@ class HTTPResponse {
     HTTPResponse(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
         String requestLine = httpRequest.getRequestLine();
+        String requestedRoute = Parser.findRequestedRoute(requestLine);
+        String method = Parser.findRequestMethod(requestLine);
         if(requestLine.contains("PATCH")) {
             responseContent = new PatchContentResponse(request, date).get().getBytes();
         } else if(requestLine.contains("image")) {
@@ -29,13 +31,26 @@ class HTTPResponse {
         } else if(requestLine.contains("partial_content")) {
             responseContent = new PartialContentResponse(request, date).get();
         } else {
-            int encoded = HTTPResponseCode.encode(requestLine);
-            String responseCode = HTTPResponseCode.retrieve(encoded);
-            headers = setHeaders(requestLine, date, responseCode);
-            body = new HTTPResponseBody(requestLine);
-            String responseString = headers.get() + "\r\n" + body.get();
-            responseContent = responseString.getBytes();
+            if((requestedRoute.equals("/file1") ||
+               requestedRoute.equals("/text-file.txt")) &&
+               method.equals("GET") == false) responseContent = generate405Response(date, requestLine).getBytes();
+            else {
+                int encoded = HTTPResponseCode.encode(requestedRoute);
+                String responseCode = HTTPResponseCode.retrieve(encoded);
+                headers = setHeaders(requestLine, date, responseCode);
+                body = new HTTPResponseBody(requestLine);
+                String responseString = headers.get() + "\r\n" + body.get();
+                responseContent = responseString.getBytes();
+            }
         }
+    }
+
+    private String generate405Response(String date, String requestLine) throws IOException {
+        String head = setHeaders(requestLine, date, "405 Method Not Allowed").get();
+        head = head + "Allow: GET\r\n";
+        String payLoad = "405: Method Not Allowed... Stick to what you're good at.";
+        String responseString = head + "\r\n" + payLoad;
+        return responseString;
     }
 
     private HTTPResponseHeaders setHeaders(String requested, String date, String responseCode) throws IOException {

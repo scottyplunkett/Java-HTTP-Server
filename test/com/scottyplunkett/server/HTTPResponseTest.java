@@ -205,13 +205,11 @@ class HTTPResponseTest {
         String requestPutFile1 = "PUT /file1 HTTP/1.1\r\nline2\r\nline3\r\n\r\n";
         InputStream in = new ByteArrayInputStream(requestPutFile1.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-        String headers = new HTTPResponseHeaders("405 Method Not Allowed", "text/plain", "bla").get();
-        headers = headers + "Allow: GET \r\n";
+        String headers = new HTTPResponseHeaders("405 Method Not Allowed", "text/html", "bla").get();
+        headers = headers + "Allow: GET\r\n";
         byte[] head = (headers + "\r\n").getBytes();
         byte[] body = "405: Method Not Allowed... Stick to what you're good at.".getBytes();
         byte[] expectedResponse = merge(body, head);
-        System.out.println(new String(expectedResponse));
-        System.out.println(new String(new HTTPResponse(request, "bla").get()));
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
 }

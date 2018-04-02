@@ -29,7 +29,6 @@ class HTTPRequest {
             }
         }
         String requestString = fullRequest.toString();
-        System.out.println(requestString);
         Collections.addAll(requestContent, requestString.split("\r\n"));
         requestLine = requestContent.get(0);
         setEtag();
