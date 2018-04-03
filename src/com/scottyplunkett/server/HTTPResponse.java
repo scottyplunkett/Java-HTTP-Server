@@ -14,14 +14,18 @@ class HTTPResponse {
     }
 
     HTTPResponse(HTTPRequest request, String date) throws IOException {
-        String requestLine = request.getRequestLine();
+        httpRequest = request;
+        String requestLine = httpRequest.getRequestLine();
         String route = Parser.findRequestedRoute(requestLine);
         int encoded = HTTPResponseCode.encode(route);
         String responseCode = HTTPResponseCode.retrieve(encoded);
         if(requestLine.contains("PATCH")) {
             responseContent = new PatchContentResponse(request, date).get().getBytes();
         } else if(requestLine.contains("image")) {
-            responseContent = new ImageContent(requestLine, date).get();
+            responseContent = new ImageContentResponse(requestLine, date).get();
+        } else if(requestLine.contains("cookie")) {
+            CookieContentResponse cookieResponse = new CookieContentResponse(request, date);
+            responseContent = cookieResponse.get();
         } else {
             headers = setHeaders(requestLine, date, responseCode);
             body = new HTTPResponseBody(requestLine);

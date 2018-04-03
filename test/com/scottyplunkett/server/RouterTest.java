@@ -105,4 +105,10 @@ class RouterTest {
         Path expectedPath = Paths.get("public/text-file.txt");
         assertEquals(expectedPath, Router.route("GET /text-file.txt HTTP/1.1"));
     }
+
+    @Test
+    void testRouteForCookie() {
+        Path expectedPath = Paths.get("pages/cookie.html");
+        assertEquals(expectedPath, Router.route("GET /cookie?type=chocolate HTTP/1.1"));
+    }
 }

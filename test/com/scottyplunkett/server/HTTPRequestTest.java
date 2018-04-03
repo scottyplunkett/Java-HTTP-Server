@@ -14,4 +14,18 @@ class HTTPRequestTest {
         HTTPRequest request = new HTTPRequest(stream);
         assertEquals("requestLine", request.getRequestLine());
     }
+
+    @Test
+    void getCookie() throws IOException {
+        InputStream stream = new ByteArrayInputStream("requestLine\r\nCookie: chocolate\r\nline3\r\nline4".getBytes());
+        HTTPRequest request = new HTTPRequest(stream);
+        assertEquals("chocolate", request.getCookie());
+    }
+
+    @Test
+    void getCookieWhenSetInParams() throws IOException {
+        InputStream stream = new ByteArrayInputStream("GET /cookie?type=chocolate\r\nline2\r\nline3\r\nline4".getBytes());
+        HTTPRequest request = new HTTPRequest(stream);
+        assertEquals("chocolate", request.getCookie());
+    }
 }
