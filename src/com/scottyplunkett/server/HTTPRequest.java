@@ -12,6 +12,7 @@ class HTTPRequest {
     private String requestLine;
     private String eTag;
     public  String cookie;
+    private String authorization;
     private String body;
     private BufferedReader reader;
 
@@ -31,6 +32,7 @@ class HTTPRequest {
         requestLine = requestContent.get(0);
         setEtag();
         setCookie();
+        setAuthorization();
         setBody();
     }
 
@@ -43,7 +45,7 @@ class HTTPRequest {
     private void setCookie() {
         if(requestLine.contains("cookie?")) cookie = requestLine.split("\\s")[1].split("\\=")[1];
         else requestContent.forEach(line -> {
-                if (line.startsWith("Cookie")) cookie = line.split("\\s")[1];
+            if (line.startsWith("Cookie")) cookie = line.split("\\s")[1];
         });
     }
 
@@ -66,6 +68,16 @@ class HTTPRequest {
 
     String getCookie() {
         return cookie;
+    }
+
+    String getAuthorization() {
+        return authorization;
+    }
+
+    private void setAuthorization() {
+        requestContent.forEach(line -> {
+            if (line.startsWith("Authorization")) authorization = line.split(":\\s")[1];
+        });
     }
 }
 

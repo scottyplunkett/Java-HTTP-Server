@@ -28,4 +28,11 @@ class HTTPRequestTest {
         HTTPRequest request = new HTTPRequest(stream);
         assertEquals("chocolate", request.getCookie());
     }
+
+    @Test
+    void getAuthorization() throws IOException {
+        InputStream stream = new ByteArrayInputStream("GET /logs HTTP/1.1\r\nAuthorization: Basic YWRtaW46aHVudGVyMg==\r\nline3\r\nline4".getBytes());
+        HTTPRequest request = new HTTPRequest(stream);
+        assertEquals("Basic YWRtaW46aHVudGVyMg==", request.getAuthorization());
+    }
 }
