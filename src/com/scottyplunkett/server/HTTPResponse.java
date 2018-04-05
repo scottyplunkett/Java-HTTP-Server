@@ -27,6 +27,8 @@ class HTTPResponse {
             responseContent = new CookieContentResponse(request, date).get();
         } else if(requestLine.contains("logs")) {
             responseContent = new LogContentResponse(request, date).get();
+        } else if(requestLine.contains("form")) {
+            responseContent = new FormContentResponse(request, date).get();
         } else {
             headers = setHeaders(requestLine, date, responseCode);
             body = new HTTPResponseBody(requestLine);

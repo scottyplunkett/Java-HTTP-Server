@@ -21,7 +21,7 @@ class CookieContentResponse {
         cookieContentPath = path;
         cookieValue = request.getCookie();
         cookieResponseBody = request.getRequestLine().contains("/eat_cookie") ?
-                getEatCookieContent() : getCookieFileContent();
+                             getEatCookieContent() : getCookieFileContent();
         String responseHeaders = new HTTPResponseHeaders("200 OK", "text/html", date).get();
         cookieResponseHeaders = responseHeaders + "Set-Cookie: " + cookieValue + "\r\n\r\n";
         response = ByteArraysReducer.merge(cookieResponseBody.getBytes(), cookieResponseHeaders.getBytes());
