@@ -19,6 +19,7 @@ class RequestResponseCycle implements Runnable {
     private HTTPResponse response;
     private byte[] message;
 
+
     RequestResponseCycle(Socket connection, InputStream input, OutputStream output) throws IOException {
         socket = connection;
         in = input;

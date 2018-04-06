@@ -8,10 +8,10 @@ import java.util.Arrays;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-class PartialContentResponse {
+class PartialContentResponse extends Producer {
     private final Path partialContentPath = Paths.get("public/partial_content.txt");
-
     private HTTPRequest httpRequest;
+    private String date;
     private String range;
     private int rangeStart;
     private int rangeEnd;
@@ -20,6 +20,8 @@ class PartialContentResponse {
     private byte[] fileContents;
     private byte[] body;
     private byte[] responseContent;
+
+    PartialContentResponse() {}
 
     PartialContentResponse(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
@@ -47,6 +49,19 @@ class PartialContentResponse {
 
     byte[] get() {
         return responseContent;
+    }
+
+    public void setHttpRequest(HTTPRequest httpRequest) {
+        this.httpRequest = httpRequest;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public void produceContent() {
+
     }
 }
 

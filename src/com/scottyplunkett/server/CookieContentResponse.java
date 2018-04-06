@@ -6,25 +6,20 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-class CookieContentResponse {
+class CookieContentResponse extends Producer {
+    private final Path cookieContentPath = Paths.get("pages/cookie.html");
+    private HTTPRequest httpRequest;
+    private String date;
     private String cookieValue;
-    private Path cookieContentPath;
     private String cookieResponseBody;
     private String cookieResponseHeaders;
     private byte[] response;
 
-    CookieContentResponse(HTTPRequest request, String date) throws IOException {
-        this(request, Paths.get("pages/cookie.html"), date);
-    }
+    CookieContentResponse() {}
 
-    CookieContentResponse(HTTPRequest request, Path path, String date) throws IOException {
-        cookieContentPath = path;
-        cookieValue = request.getCookie();
-        cookieResponseBody = request.getRequestLine().contains("/eat_cookie") ?
-                             getEatCookieContent() : getCookieFileContent();
-        String responseHeaders = new HTTPResponseHeaders("200 OK", "text/html", date).get();
-        cookieResponseHeaders = responseHeaders + "Set-Cookie: " + cookieValue + "\r\n\r\n";
-        response = ByteArraysReducer.merge(cookieResponseBody.getBytes(), cookieResponseHeaders.getBytes());
+    CookieContentResponse(HTTPRequest request, String _date) throws IOException {
+        httpRequest = request;
+        date = _date;
     }
 
     private String getCookieFileContent() throws IOException {
@@ -37,5 +32,23 @@ class CookieContentResponse {
 
     public byte[] get() {
         return response;
+    }
+
+    public void setHttpRequest(HTTPRequest httpRequest) {
+        this.httpRequest = httpRequest;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public void produceContent() throws IOException {
+        cookieValue = httpRequest.getCookie();
+        cookieResponseBody = httpRequest.getRequestLine().contains("/eat_cookie") ?
+                getEatCookieContent() : getCookieFileContent();
+        String responseHeaders = new HTTPResponseHeaders("200 OK", "text/html", date).get();
+        cookieResponseHeaders = responseHeaders + "Set-Cookie: " + cookieValue + "\r\n\r\n";
+        response = ByteArraysReducer.merge(cookieResponseBody.getBytes(), cookieResponseHeaders.getBytes());
     }
 }

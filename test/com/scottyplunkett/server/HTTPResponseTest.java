@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HTTPResponseTest {
 
@@ -55,7 +56,10 @@ class HTTPResponseTest {
                                  "Date: bla\r\n" +
                                  "Content-Type: text/html\r\n";
         String expectedResponse = expectedHeaders + "\r\n" + "";
-        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
+        HTTPResponse actualInstance = new HTTPResponse(request, "bla");
+        byte[] actualBytes = actualInstance.get();
+        String actualResponse = new String(actualBytes);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -171,7 +175,9 @@ class HTTPResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "<h1>data=fatcat</h1>".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        HTTPResponse httpResponse = new HTTPResponse(request, "bla");
+        byte[] actualResponse = httpResponse.get();
+        assertArrayEquals(expectedResponse, actualResponse);
         Files.write(Paths.get("pages/form.html"), "".getBytes());
     }
 
