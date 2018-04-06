@@ -1,9 +1,10 @@
 package com.scottyplunkett.server;
 
 import java.io.IOException;
-import java.nio.file.Files;
 
 class HTTPResponse {
+    private Producer producer;
+    private String date;
     private HTTPRequest httpRequest;
     private byte[] responseContent;
     private HTTPResponseHeaders headers;
@@ -13,59 +14,41 @@ class HTTPResponse {
         this(request, Date.getDate());
     }
 
-    HTTPResponse(HTTPRequest request, String date) throws IOException {
+    HTTPResponse(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
-        String requestLine = httpRequest.getRequestLine();
-        String requestedRoute = Parser.findRequestedRoute(requestLine);
-        String method = Parser.findRequestMethod(requestLine);
-        if(requestLine.contains("PATCH")) {
-            responseContent = new PatchContentResponse(request, date).get().getBytes();
-        } else if(requestLine.contains("image")) {
-            responseContent = new ImageContentResponse(requestLine, date).get();
-        } else if(requestLine.contains("cookie")) {
-            responseContent = new CookieContentResponse(request, date).get();
-        } else if(requestLine.contains("logs")) {
-            responseContent = new LogContentResponse(request, date).get();
-        } else if(requestLine.contains("form")) {
-            responseContent = new FormContentResponse(request, date).get();
-        } else if(requestLine.contains("partial_content")) {
-            responseContent = new PartialContentResponse(request, date).get();
-        } else {
-            if((requestedRoute.equals("/file1") ||
-               requestedRoute.equals("/text-file.txt")) &&
-               method.equals("GET") == false) responseContent = generate405Response(date, requestLine).getBytes();
-            else {
-                int encoded = HTTPResponseCode.encode(requestedRoute);
-                String responseCode = HTTPResponseCode.retrieve(encoded);
-                headers = setHeaders(requestLine, date, responseCode);
-                body = new HTTPResponseBody(requestLine);
-                String responseString = headers.get() + "\r\n" + body.get();
-                responseContent = responseString.getBytes();
-            }
-        }
+        date = _date;
+        producer = deduceProducer(request.getRequestLine());
+        producer.setHttpRequest(httpRequest);
+        producer.setDate(date);
+        produceContent();
     }
 
-    private String generate405Response(String date, String requestLine) throws IOException {
-        String head = setHeaders(requestLine, date, "405 Method Not Allowed").get();
-        head = head + "Allow: GET\r\n";
-        String payLoad = "405: Method Not Allowed... Stick to what you're good at.";
-        String responseString = head + "\r\n" + payLoad;
-        return responseString;
+    private Producer deduceProducer(String deduced) throws IOException {
+        String method = Parser.findRequestMethod(deduced);
+        if (deduced.contains("patch")) return new PatchContentResponse();
+        if (deduced.contains("image")) return new ImageContentResponse();
+        if (deduced.contains("cookie")) return new CookieContentResponse();
+        if (deduced.contains("logs")) return new LogContentResponse();
+        if (deduced.contains("form")) return new FormContentResponse();
+        if (deduced.contains("partial_content")) return new PartialContentResponse();
+        if (isMethodRestrictedOnRoute(deduced, method)) return new MethodNotAllowedContentResponse();
+        else return new BasicContentResponse();
     }
 
-    private HTTPResponseHeaders setHeaders(String requested, String date, String responseCode) throws IOException {
-        String contentType = Files.probeContentType(Router.route(requested));
-        switch (requested) {
-            case "OPTIONS /method_options HTTP/1.1" :
-                return new HTTPResponseHeaders(responseCode, contentType, date, "GET,HEAD,POST,OPTIONS,PUT");
-            case "OPTIONS /method_options2 HTTP/1.1" :
-                return new HTTPResponseHeaders(responseCode, contentType, date, "GET,OPTIONS");
-            default:
-                return new HTTPResponseHeaders(responseCode, contentType, date);
-        }
+    private void produceContent() throws IOException {
+        producer.produceContent();
     }
 
-    byte[] get() {
-        return responseContent;
+
+
+    private boolean isMethodRestrictedOnRoute(String requestedRoute, String method) {
+        return (requestedRoute.equals("/file1") || requestedRoute.equals("/text-file.txt"))
+                && method.equals("GET") == false;
+    }
+
+
+
+    byte[] get() throws IOException {
+        return producer.get();
     }
 }
