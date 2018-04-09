@@ -18,7 +18,6 @@ class FormContentResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "<h1>data=fatcat</h1>".getBytes();
         byte[] expectedResponse = merge(body, head);
-        System.out.println(new String(expectedResponse));
         assertArrayEquals(expectedResponse, new FormContentResponse(request, "bla").get());
     }
 
@@ -30,7 +29,6 @@ class FormContentResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "<h1>data=healthcliff</h1>".getBytes();
         byte[] expectedResponse = merge(body, head);
-        System.out.println(new String(expectedResponse));
         assertArrayEquals(expectedResponse, new FormContentResponse(request, "bla").get());
     }
 
@@ -42,7 +40,6 @@ class FormContentResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "".getBytes();
         byte[] expectedResponse = merge(body, head);
-        System.out.println(new String(expectedResponse));
         assertArrayEquals(expectedResponse, new FormContentResponse(request, "bla").get());
     }
 

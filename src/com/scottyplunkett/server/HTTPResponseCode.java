@@ -35,8 +35,8 @@ enum HTTPResponseCode {
         return status;
     }
 
-    public static int encode(String requested) {
-        switch (requested) {
+    public static int encode(String route) {
+        switch (route) {
             case "/redirect": return 302;
             case "/foobar": return 404;
             case "/coffee": return 418;

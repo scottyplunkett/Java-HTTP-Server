@@ -185,4 +185,31 @@ class HTTPResponseTest {
         byte[] expectedResponse = merge(body, head);
         assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
     }
+
+    @Test
+    void getPartialContent() throws IOException {
+        String requestPartialContent = "GET /partial_content.txt HTTP/1.1\r\nRange: bytes=0-4\r\nline3\r\n\r\n";
+        InputStream in = new ByteArrayInputStream(requestPartialContent.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        String headers = new HTTPResponseHeaders("206 Partial Content", "text/plain", "bla").get();
+        headers = headers + "Content-Range: bytes 0-5/77\r\n";
+        headers = headers + "Content-Length: 5\r\n";
+        byte[] head = (headers + "\r\n").getBytes();
+        byte[] body = "This ".getBytes();
+        byte[] expectedResponse = merge(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
+
+    @Test
+    void get405WhenRequestPutForFile1() throws IOException {
+        String requestPutFile1 = "PUT /file1 HTTP/1.1\r\nline2\r\nline3\r\n\r\n";
+        InputStream in = new ByteArrayInputStream(requestPutFile1.getBytes());
+        HTTPRequest request = new HTTPRequest(in);
+        String headers = new HTTPResponseHeaders("405 Method Not Allowed", "text/html", "bla").get();
+        headers = headers + "Allow: GET\r\n";
+        byte[] head = (headers + "\r\n").getBytes();
+        byte[] body = "405: Method Not Allowed... Stick to what you're good at.".getBytes();
+        byte[] expectedResponse = merge(body, head);
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+    }
 }

@@ -14,6 +14,7 @@ class HTTPRequest {
     public  String cookie;
     private String authorization;
     private String body;
+    private String range;
     private BufferedReader reader;
 
     HTTPRequest(InputStream in) throws IOException {
@@ -33,6 +34,7 @@ class HTTPRequest {
         setEtag();
         setCookie();
         setAuthorization();
+        setRange();
         setBody();
     }
 
@@ -74,9 +76,22 @@ class HTTPRequest {
         return authorization;
     }
 
+    String getRange() {
+        return range;
+    }
+
     private void setAuthorization() {
         requestContent.forEach(line -> {
             if (line.startsWith("Authorization")) authorization = line.split(":\\s")[1];
+        });
+    }
+
+    private void setRange() {
+        int value = 1;
+        requestContent.forEach(line -> {
+            if (line.startsWith("Range")) {
+                range = line.split("\\=")[value];
+            }
         });
     }
 }
