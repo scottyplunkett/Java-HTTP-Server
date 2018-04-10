@@ -21,7 +21,9 @@ class LogContentResponseTest {
                                                "WWW-Authenticate: Basic realm=\"Logs\"\r\n\r\n").getBytes();
         byte[] body = "401 Unauthorized... Probably Above Your Paygrade.".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new LogContentResponse(request, "bla").get());
+        LogContentResponse logContentResponse = new LogContentResponse(request, "bla");
+        logContentResponse.produceContent();
+        assertArrayEquals(expectedResponse, logContentResponse.get());
     }
 
     @Test
@@ -32,6 +34,8 @@ class LogContentResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = Files.readAllBytes(Paths.get("logs/logs.html"));
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new LogContentResponse(request, "bla").get());
+        LogContentResponse logContentResponse = new LogContentResponse(request, "bla");
+        logContentResponse.produceContent();
+        assertArrayEquals(expectedResponse, logContentResponse.get());
     }
 }

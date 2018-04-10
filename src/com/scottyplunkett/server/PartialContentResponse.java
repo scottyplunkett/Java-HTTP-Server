@@ -24,27 +24,8 @@ class PartialContentResponse extends Producer {
     PartialContentResponse() {}
 
     PartialContentResponse(HTTPRequest request, String date) throws IOException {
-        httpRequest = request;
-        fileContents = Files.readAllBytes(partialContentPath);
-        totalBytes = fileContents.length;
-        range = request.getRange();
-        String[] splitRange = range.split("\\-");
-        if(splitRange.length == 1) {
-            rangeStart = Integer.parseInt(splitRange[0]);
-            rangeEnd = totalBytes;
-        } else if(splitRange[0].equals("")) {
-            rangeStart = totalBytes - Integer.parseInt(splitRange[1]);
-            rangeEnd = totalBytes;
-        } else {
-            rangeStart = Integer.parseInt(splitRange[0]);
-            rangeEnd = Integer.parseInt(splitRange[1]) + 1;
-        }
-        String headers = new HTTPResponseHeaders("206 Partial Content", "text/plain", date).get();
-        headers = headers + "Content-Range: bytes " + rangeStart + "-" + rangeEnd + "/" + totalBytes + "\r\n";
-        headers = headers + "Content-Length: " + (rangeEnd - rangeStart) + "\r\n";
-        head = (headers + "\r\n").getBytes();
-        body = Arrays.copyOfRange(fileContents, rangeStart, rangeEnd);
-        responseContent = merge(body, head);
+        setHttpRequest(request);
+        setDate(date);
     }
 
     byte[] get() {
@@ -60,8 +41,55 @@ class PartialContentResponse extends Producer {
     }
 
     @Override
-    public void produceContent() {
+    public void produceContent() throws IOException {
+        fileContents = Files.readAllBytes(partialContentPath);
+        totalBytes = fileContents.length;
+        range = httpRequest.getRange();
+        String[] splitRange = range.split("\\-");
+        setRangeBasedOnLocationOfDash(splitRange);
+        setHead();
+        body = getByteRange();
+        responseContent = merge(body, head);
+    }
 
+    private byte[] getByteRange() {
+        return Arrays.copyOfRange(fileContents, rangeStart, rangeEnd);
+    }
+
+    private void setHead() {
+        String headers = new HTTPResponseHeaders("206 Partial Content", "text/plain", date).get();
+        headers = headers + "Content-Range: bytes " + rangeStart + "-" + rangeEnd + "/" + totalBytes + "\r\n";
+        headers = headers + "Content-Length: " + (rangeEnd - rangeStart) + "\r\n";
+        head = (headers + "\r\n").getBytes();
+    }
+
+    private void setRangeBasedOnLocationOfDash(String[] splitRange) {
+        if (singleValueGivenForRange(splitRange)) setRangeWithOffset(splitRange);
+        else setRangeWithTwoGivenValues(splitRange);
+    }
+
+    private boolean singleValueGivenForRange(String[] splitRange) {
+        return (splitRange.length == 1 || splitRange[0].equals(""));
+    }
+
+    private void setRangeWithOffset(String[] splitRange) {
+        if(splitRange.length == 1) setRangeOffsetFromStart(splitRange);
+        else setRangeOffsetFromEnd(splitRange);
+    }
+
+    private void setRangeOffsetFromEnd(String[] splitRange) {
+        rangeStart = totalBytes - Integer.parseInt(splitRange[1]);
+        rangeEnd = totalBytes;
+    }
+
+    private void setRangeOffsetFromStart(String[] splitRange) {
+        rangeStart = Integer.parseInt(splitRange[0]);
+        rangeEnd = totalBytes;
+    }
+
+    private void setRangeWithTwoGivenValues(String[] splitRange) {
+        rangeStart = Integer.parseInt(splitRange[0]);
+        rangeEnd = Integer.parseInt(splitRange[1]) + 1;
     }
 }
 

@@ -17,6 +17,7 @@ class PatchContentResponseTest {
         HTTPRequest request = new HTTPRequest(in);
         String expectedHeaders = "HTTP/1.1 200 OK\r\nDate: bla\r\nContent-Type: text/plain\r\n";
         PatchContentResponse actualPatch = new PatchContentResponse(request, "bla");
+        actualPatch.produceContent();
         String actualResponse = new String(actualPatch.get());
         assertEquals(expectedHeaders + "\r\n" + "default content", actualResponse);
     }
@@ -29,6 +30,7 @@ class PatchContentResponseTest {
         HTTPRequest request = new HTTPRequest(in);
         String expectedHeaders = "HTTP/1.1 204\r\nDate: bla\r\nContent-Type: text/plain\r\n";
         PatchContentResponse actualPatch = new PatchContentResponse(request, "bla");
+        actualPatch.produceContent();
         String actualResponse = new String(actualPatch.get());
         assertEquals(expectedHeaders + "\r\n", actualResponse);
     }
@@ -43,6 +45,7 @@ class PatchContentResponseTest {
         InputStream in = new ByteArrayInputStream(requestPatchContent.getBytes());
         HTTPRequest request = new HTTPRequest(in);
         PatchContentResponse patchContentResponse = new PatchContentResponse(request, "bla");
+        patchContentResponse.produceContent();
         Path patchContentPath = Paths.get("public/patch-content.txt");
         PageContent pageContent = new PageContent(patchContentPath, request.getRequestLine());
         assertEquals("patched content", pageContent.get());
@@ -55,6 +58,7 @@ class PatchContentResponseTest {
         InputStream in2 = new ByteArrayInputStream(secondRequestPatchContent.getBytes());
         HTTPRequest request2 = new HTTPRequest(in2);
         PatchContentResponse secondPatchContentResponse = new PatchContentResponse(request2, "bla");
+        secondPatchContentResponse.produceContent();
         PageContent pageContent2 = new PageContent(patchContentPath, request2.getRequestLine());
         assertEquals("default content", pageContent2.get());
     }

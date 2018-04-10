@@ -20,8 +20,10 @@ class ImageContentResponseTest {
         String requestLine = "GET /image.jpeg HTTP/1.1\r\n";
         InputStream in = new ByteArrayInputStream(requestLine.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-
-        assertArrayEquals(expectedImage, new ImageContentResponse(request).getImageData());
+        ImageContentResponse imageContentResponse = new ImageContentResponse();
+        imageContentResponse.setHttpRequest(request);
+        imageContentResponse.produceContent();
+        assertArrayEquals(expectedImage, imageContentResponse.getImageData());
     }
 
     @Test
@@ -31,7 +33,10 @@ class ImageContentResponseTest {
         String requestLine = "GET /image.gif HTTP/1.1\r\n";
         InputStream in = new ByteArrayInputStream(requestLine.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-        assertArrayEquals(expectedImage, new ImageContentResponse(request).getImageData());
+        ImageContentResponse imageContentResponse = new ImageContentResponse();
+        imageContentResponse.setHttpRequest(request);
+        imageContentResponse.produceContent();
+        assertArrayEquals(expectedImage, imageContentResponse.getImageData());
     }
 
     @Test
@@ -41,6 +46,9 @@ class ImageContentResponseTest {
         String requestLine = "GET /image.png HTTP/1.1\r\n";
         InputStream in = new ByteArrayInputStream(requestLine.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-        assertArrayEquals(expectedImage, new ImageContentResponse(request).getImageData());
+        ImageContentResponse imageContentResponse = new ImageContentResponse();
+        imageContentResponse.setHttpRequest(request);
+        imageContentResponse.produceContent();
+        assertArrayEquals(expectedImage, imageContentResponse.getImageData());
     }
 }

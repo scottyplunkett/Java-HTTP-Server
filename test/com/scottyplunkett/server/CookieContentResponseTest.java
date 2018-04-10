@@ -20,7 +20,9 @@ class CookieContentResponseTest {
         HTTPResponseHeaders headersBeforeAppend = new HTTPResponseHeaders("200 OK", "text/html", "bla");
         byte[] head = (headersBeforeAppend.get() + "Set-Cookie: chocolate\r\n" + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new CookieContentResponse(request, "bla").get());
+        CookieContentResponse cookieContentResponse = new CookieContentResponse(request, "bla");
+        cookieContentResponse.produceContent();
+        assertArrayEquals(expectedResponse, cookieContentResponse.get());
     }
 
     @Test
@@ -32,6 +34,8 @@ class CookieContentResponseTest {
         HTTPResponseHeaders headersBeforeAppend = new HTTPResponseHeaders("200 OK", "text/html", "bla");
         byte[] head = (headersBeforeAppend.get() + "Set-Cookie: chocolate\r\n" + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new CookieContentResponse(request, "bla").get());
+        CookieContentResponse cookieContentResponse = new CookieContentResponse(request, "bla");
+        cookieContentResponse.produceContent();
+        assertArrayEquals(expectedResponse, cookieContentResponse.get());
     }
 }

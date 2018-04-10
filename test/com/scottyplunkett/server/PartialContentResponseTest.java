@@ -23,7 +23,9 @@ class PartialContentResponseTest {
         byte[] partialContent = "This is a file that contains text to read part of in order to fulfill a 206.\n".getBytes();
         byte[] body = Arrays.copyOfRange(partialContent,0,5);
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new PartialContentResponse(request, "bla").get());
+        PartialContentResponse partialContentResponse = new PartialContentResponse(request, "bla");
+        partialContentResponse.produceContent();
+        assertArrayEquals(expectedResponse, partialContentResponse.get());
     }
 
     @Test
@@ -38,7 +40,9 @@ class PartialContentResponseTest {
         byte[] partialContent = "This is a file that contains text to read part of in order to fulfill a 206.\n".getBytes();
         byte[] body = Arrays.copyOfRange(partialContent,71,77);
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new PartialContentResponse(request, "bla").get());
+        PartialContentResponse partialContentResponse = new PartialContentResponse(request, "bla");
+        partialContentResponse.produceContent();
+        assertArrayEquals(expectedResponse, partialContentResponse.get());
     }
 
 }

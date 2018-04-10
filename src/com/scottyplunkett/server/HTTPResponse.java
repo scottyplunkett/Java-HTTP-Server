@@ -31,8 +31,9 @@ class HTTPResponse {
         if (deduced.contains("logs")) return new LogContentResponse();
         if (deduced.contains("form")) return new FormContentResponse();
         if (deduced.contains("partial_content")) return new PartialContentResponse();
-        if (isMethodRestrictedOnRoute(deduced, method)) return new MethodNotAllowedContentResponse();
-        else return new BasicContentResponse();
+        return isMethodRestrictedOnRoute(Parser.findRequestedRoute(deduced), method) ?
+            new MethodNotAllowedContentResponse() :
+            new BasicContentResponse();
     }
 
     private void produceContent() throws IOException {
@@ -42,8 +43,8 @@ class HTTPResponse {
 
 
     private boolean isMethodRestrictedOnRoute(String requestedRoute, String method) {
-        return (requestedRoute.equals("/file1") || requestedRoute.equals("/text-file.txt"))
-                && method.equals("GET") == false;
+        return ((requestedRoute.equals("/file1") || requestedRoute.equals("/text-file.txt"))
+                && !method.equals("GET"));
     }
 
 
