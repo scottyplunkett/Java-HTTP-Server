@@ -3,12 +3,10 @@ package com.scottyplunkett.server;
 import java.io.IOException;
 
 class HTTPResponse {
+    private final Deducer deducer = new Deducer();
     private Producer producer;
     private String date;
     private HTTPRequest httpRequest;
-    private byte[] responseContent;
-    private HTTPResponseHeaders headers;
-    private HTTPResponseBody body;
 
     HTTPResponse(HTTPRequest request) throws IOException {
         this(request, Date.getDate());
@@ -17,36 +15,19 @@ class HTTPResponse {
     HTTPResponse(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
         date = _date;
-        producer = deduceProducer(request.getRequestLine());
-        producer.setHttpRequest(httpRequest);
-        producer.setDate(date);
+        producer = deducer.deduceProducer(request.getRequestLine());
+        setUpProducer();
         produceContent();
-    }
-
-    private Producer deduceProducer(String deduced) throws IOException {
-        String method = Parser.findRequestMethod(deduced);
-        if (deduced.contains("patch")) return new PatchContentResponse();
-        if (deduced.contains("image")) return new ImageContentResponse();
-        if (deduced.contains("cookie")) return new CookieContentResponse();
-        if (deduced.contains("logs")) return new LogContentResponse();
-        if (deduced.contains("form")) return new FormContentResponse();
-        if (deduced.contains("partial_content")) return new PartialContentResponse();
-        return isMethodRestrictedOnRoute(Parser.findRequestedRoute(deduced), method) ?
-            new MethodNotAllowedContentResponse() :
-            new BasicContentResponse();
     }
 
     private void produceContent() throws IOException {
         producer.produceContent();
     }
 
-
-
-    private boolean isMethodRestrictedOnRoute(String requestedRoute, String method) {
-        return ((requestedRoute.equals("/file1") || requestedRoute.equals("/text-file.txt"))
-                && !method.equals("GET"));
+    private void setUpProducer() {
+        producer.setHttpRequest(httpRequest);
+        producer.setDate(date);
     }
-
 
 
     byte[] get() throws IOException {

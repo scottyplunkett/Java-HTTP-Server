@@ -2,6 +2,7 @@ package com.scottyplunkett.server;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DirectoryContentTest {
 
     @Test
-    void get() {
+    void get() throws IOException {
         String expectedHTML =
                 "<a href=\"/text-file.txt\">text-file.txt</a><br>" +
                 "<a href=\"/file2\">file2</a><br>" +

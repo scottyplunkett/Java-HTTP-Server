@@ -11,7 +11,6 @@ import java.nio.file.StandardOpenOption;
 
 class RequestResponseCycle implements Runnable {
     private final Path logPath = Paths.get("Logs/logs.html");
-
     private Socket socket;
     private InputStream in;
     private OutputStream out;
