@@ -8,16 +8,15 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 class HTTPServer {
+    private static ProgramArguments programArguments;
     private ExecutorService pool;
     private ServerSocket internalConnection;
 
-    public static void main() throws IOException {
-        main(new String[]{"5000"});
-    }
-
     public static void main(String[] args) throws IOException {
-        int port = Integer.parseInt(args[0]);
+        programArguments = new ProgramArguments(args);
+        int port = programArguments.getPort();
         ServerSocket serverSocket = new ServerSocket(port);
         int processingCoresAvailable = Runtime.getRuntime().availableProcessors();
         new HTTPServer(serverSocket, Executors.newFixedThreadPool(processingCoresAvailable)).start();
@@ -41,4 +40,5 @@ class HTTPServer {
         pool.shutdown();
         internalConnection.close();
     }
+
 }

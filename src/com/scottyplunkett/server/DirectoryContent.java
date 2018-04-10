@@ -1,26 +1,26 @@
 package com.scottyplunkett.server;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 class DirectoryContent {
+    DirectoryStream<Path> directoryStream;
     private String directoryContent;
 
-    DirectoryContent(Path path){
-        String directory = String.valueOf(path);
+    DirectoryContent(Path path) throws IOException {
         String content = "";
-        File[] files = new File(directory).listFiles();
-        List<String> names =  Arrays.asList(files).parallelStream()
-                                .map(file -> file.getName())
-                                .collect(Collectors.toList());
-        for (String name : names) {
-            String linkToFile = "<a href=\"" + "/" + name + "\">" + name + "</a><br>";
+        directoryStream = Files.newDirectoryStream(path);
+        for (Path file : directoryStream) {
+            String linkToFile = getLinkToFile(file);
             content += linkToFile;
         }
         directoryContent = content;
+    }
+
+    private String getLinkToFile(Path file) {
+        return "<a href=\"" + "/" + file.getFileName() + "\">" + file.getFileName() + "</a><br>";
     }
 
     String get(){
