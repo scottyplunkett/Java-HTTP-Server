@@ -18,10 +18,9 @@ class FormContentResponse extends Producer {
 
     FormContentResponse() {}
 
-    FormContentResponse(HTTPRequest request, String date) throws IOException {
+    FormContentResponse(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
-        method = httpRequest.getRequestLine().split("\\s")[0];
-        System.out.println(method);
+        date = _date;
     }
 
     private void writeToForm() throws IOException {
@@ -47,10 +46,19 @@ class FormContentResponse extends Producer {
 
     @Override
     public void produceContent() throws IOException {
-        if(method.equals("POST") || method.equals("PUT")) writeToForm();
-        if(method.equals("DELETE")) deleteFormData();
+        method = Parser.findRequestMethod(httpRequest.getRequestLine());
+        writeOnPostOrPut();
+        deleteOnDelete();
         head = (new HTTPResponseHeaders("200 OK", "text/html", date).get() + "\r\n").getBytes();
         body = Files.readAllBytes(formPath);
         responseContent = merge(body, head);
+    }
+
+    private void deleteOnDelete() throws IOException {
+        if(method.equals("DELETE")) deleteFormData();
+    }
+
+    private void writeOnPostOrPut() throws IOException {
+        if(method.equals("POST") || method.equals("PUT")) writeToForm();
     }
 }

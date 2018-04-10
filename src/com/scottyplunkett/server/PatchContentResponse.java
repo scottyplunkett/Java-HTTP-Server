@@ -46,14 +46,22 @@ class PatchContentResponse extends Producer {
     public void produceContent() throws IOException {
         String requestLine = httpRequest.getRequestLine();
         String requestMethod = requestLine.split("\\s")[0];
-        if("PATCH".equals(requestMethod)) {
-            headers = "HTTP/1.1 204\r\nDate: " + date + "\r\nContent-Type: text/plain\r\n";
-            body = "";
-            writeToFile(httpRequest.getEtag());
+        if ("PATCH".equals(requestMethod)) {
+            produce204();
         } else {
-            headers = "HTTP/1.1 200 OK\r\nDate: " + date + "\r\nContent-Type: text/plain\r\n";
-            body = new HTTPResponseBody(httpRequest.getRequestLine()).get();
+            produce200();
         }
         responseContent = headers + "\r\n" + body;
+    }
+
+    private void produce200() throws IOException {
+        headers = "HTTP/1.1 200 OK\r\nDate: " + date + "\r\nContent-Type: text/plain\r\n";
+        body = new HTTPResponseBody(httpRequest.getRequestLine()).get();
+    }
+
+    private void produce204() throws IOException {
+        headers = "HTTP/1.1 204\r\nDate: " + date + "\r\nContent-Type: text/plain\r\n";
+        body = "";
+        writeToFile(httpRequest.getEtag());
     }
 }
