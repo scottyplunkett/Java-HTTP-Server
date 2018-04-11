@@ -6,7 +6,7 @@ import java.nio.file.Path;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-class ImageContentResponse extends Producer {
+class ImageHandler extends Producer {
     private HTTPRequest httpRequest;
     private String date;
     private Path imagePath;
@@ -15,13 +15,13 @@ class ImageContentResponse extends Producer {
     private byte[] imageHeaders;
     private byte[] response;
 
-    ImageContentResponse() {}
+    ImageHandler() {}
 
-    ImageContentResponse(HTTPRequest request) throws IOException {
+    ImageHandler(HTTPRequest request) throws IOException {
         this(request, Date.getDate());
     }
 
-    ImageContentResponse(HTTPRequest request, String _date) throws IOException {
+    ImageHandler(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
         date = _date;
     }

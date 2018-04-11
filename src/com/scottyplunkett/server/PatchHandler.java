@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-class PatchContentResponse extends Producer {
+class PatchHandler extends Producer {
     private String responseContent;
     private String headers;
     private String body;
@@ -17,9 +17,9 @@ class PatchContentResponse extends Producer {
     private final byte[] patchBytes = "patched content".getBytes();
     private final Path path = Paths.get("public/patch-content.txt");
 
-    PatchContentResponse() {}
+    PatchHandler() {}
 
-    PatchContentResponse(HTTPRequest request, String date) throws IOException {
+    PatchHandler(HTTPRequest request, String date) throws IOException {
         setHttpRequest(request);
         setDate(date);
 

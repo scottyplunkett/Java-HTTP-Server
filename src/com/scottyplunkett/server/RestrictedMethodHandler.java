@@ -3,14 +3,14 @@ package com.scottyplunkett.server;
 import java.io.IOException;
 import java.nio.file.Files;
 
-class MethodNotAllowedContentResponse extends Producer {
+class RestrictedMethodHandler extends Producer {
     HTTPRequest httpRequest;
     String date;
     String produced;
 
-    MethodNotAllowedContentResponse() {}
+    RestrictedMethodHandler() {}
 
-    MethodNotAllowedContentResponse(HTTPRequest request, String _date) throws IOException {
+    RestrictedMethodHandler(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
         date = _date;
     }

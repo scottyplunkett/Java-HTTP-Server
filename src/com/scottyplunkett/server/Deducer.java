@@ -6,15 +6,15 @@ public class Deducer {
 
     Producer deduceProducer(String requestLine) {
         String method = Parser.findRequestMethod(requestLine);
-        if (requestLine.contains("patch")) return new PatchContentResponse();
-        if (requestLine.contains("image")) return new ImageContentResponse();
-        if (requestLine.contains("cookie")) return new CookieContentResponse();
-        if (requestLine.contains("logs")) return new LogContentResponse();
-        if (requestLine.contains("form")) return new FormContentResponse();
-        if (requestLine.contains("partial_content")) return new PartialContentResponse();
+        if (requestLine.contains("patch")) return new PatchHandler();
+        if (requestLine.contains("image")) return new ImageHandler();
+        if (requestLine.contains("cookie")) return new CookieHandler();
+        if (requestLine.contains("logs")) return new LogsHandler();
+        if (requestLine.contains("form")) return new FormHandler();
+        if (requestLine.contains("partial_content")) return new PartialHandler();
         return isMethodRestrictedOnRoute(Parser.findRequestedRoute(requestLine), method) ?
-                new MethodNotAllowedContentResponse() :
-                new BasicContentResponse();
+                new RestrictedMethodHandler() :
+                new DefaultHandler();
     }
 
     private boolean isMethodRestrictedOnRoute(String requestedRoute, String method) {

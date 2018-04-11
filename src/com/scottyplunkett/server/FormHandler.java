@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-class FormContentResponse extends Producer {
+class FormHandler extends Producer {
     private HTTPRequest httpRequest;
     private String date;
     private final Path formPath = Paths.get("pages/form.html");
@@ -16,9 +16,9 @@ class FormContentResponse extends Producer {
     private byte[] body;
     private byte[] responseContent;
 
-    FormContentResponse() {}
+    FormHandler() {}
 
-    FormContentResponse(HTTPRequest request, String _date) throws IOException {
+    FormHandler(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
         date = _date;
     }

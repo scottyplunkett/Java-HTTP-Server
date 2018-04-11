@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-class LogContentResponse extends Producer {
+class LogsHandler extends Producer {
     private HTTPRequest httpRequest;
     private String date;
     private final String authHeader = "WWW-Authenticate: Basic realm=\"Logs\"";
@@ -15,9 +15,9 @@ class LogContentResponse extends Producer {
     private byte[] body;
     private byte[] responseContent;
 
-    LogContentResponse() {}
+    LogsHandler() {}
 
-    LogContentResponse(HTTPRequest request, String _date) throws IOException {
+    LogsHandler(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
         date = _date;
     }
