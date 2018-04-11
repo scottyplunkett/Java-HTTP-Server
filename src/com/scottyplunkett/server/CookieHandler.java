@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-class CookieContentResponse extends Producer {
+class CookieHandler extends Producer {
     private final Path cookieContentPath = Paths.get("pages/cookie.html");
     private HTTPRequest httpRequest;
     private String date;
@@ -15,9 +15,9 @@ class CookieContentResponse extends Producer {
     private String cookieResponseHeaders;
     private byte[] response;
 
-    CookieContentResponse() {}
+    CookieHandler() {}
 
-    CookieContentResponse(HTTPRequest request, String _date) throws IOException {
+    CookieHandler(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
         date = _date;
     }

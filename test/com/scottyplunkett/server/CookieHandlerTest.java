@@ -9,7 +9,7 @@ import java.io.InputStream;
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class CookieContentResponseTest {
+class CookieHandlerTest {
 
     @Test
     void get() throws IOException {
@@ -20,9 +20,9 @@ class CookieContentResponseTest {
         HTTPResponseHeaders headersBeforeAppend = new HTTPResponseHeaders("200 OK", "text/html", "bla");
         byte[] head = (headersBeforeAppend.get() + "Set-Cookie: chocolate\r\n" + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        CookieContentResponse cookieContentResponse = new CookieContentResponse(request, "bla");
-        cookieContentResponse.produceContent();
-        assertArrayEquals(expectedResponse, cookieContentResponse.get());
+        CookieHandler cookieHandler = new CookieHandler(request, "bla");
+        cookieHandler.produceContent();
+        assertArrayEquals(expectedResponse, cookieHandler.get());
     }
 
     @Test
@@ -34,8 +34,8 @@ class CookieContentResponseTest {
         HTTPResponseHeaders headersBeforeAppend = new HTTPResponseHeaders("200 OK", "text/html", "bla");
         byte[] head = (headersBeforeAppend.get() + "Set-Cookie: chocolate\r\n" + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        CookieContentResponse cookieContentResponse = new CookieContentResponse(request, "bla");
-        cookieContentResponse.produceContent();
-        assertArrayEquals(expectedResponse, cookieContentResponse.get());
+        CookieHandler cookieHandler = new CookieHandler(request, "bla");
+        cookieHandler.produceContent();
+        assertArrayEquals(expectedResponse, cookieHandler.get());
     }
 }

@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-class PartialContentResponse extends Producer {
+class PartialHandler extends Producer {
     private final Path partialContentPath = Paths.get("public/partial_content.txt");
     private HTTPRequest httpRequest;
     private String date;
@@ -21,9 +21,9 @@ class PartialContentResponse extends Producer {
     private byte[] body;
     private byte[] responseContent;
 
-    PartialContentResponse() {}
+    PartialHandler() {}
 
-    PartialContentResponse(HTTPRequest request, String date) throws IOException {
+    PartialHandler(HTTPRequest request, String date) throws IOException {
         setHttpRequest(request);
         setDate(date);
     }

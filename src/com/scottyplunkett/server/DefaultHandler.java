@@ -3,14 +3,14 @@ package com.scottyplunkett.server;
 import java.io.IOException;
 import java.nio.file.Files;
 
-class BasicContentResponse extends Producer {
+class DefaultHandler extends Producer {
     HTTPRequest httpRequest;
     String date;
     String produced;
 
-    BasicContentResponse() {}
+    DefaultHandler() {}
 
-    BasicContentResponse(HTTPRequest request, String _date) throws IOException {
+    DefaultHandler(HTTPRequest request, String _date) throws IOException {
         httpRequest = request;
         date = _date;
     }
@@ -30,8 +30,9 @@ class BasicContentResponse extends Producer {
         if(requested.equals("OPTIONS /method_options HTTP/1.1" ))
             return new HTTPResponseHeaders(responseCode, contentType, date, "GET,HEAD,POST,OPTIONS,PUT");
         if(requested.equals("OPTIONS /method_options2 HTTP/1.1" ))
-                return new HTTPResponseHeaders(responseCode, contentType, date, "GET,OPTIONS");
-        else return new HTTPResponseHeaders(responseCode, contentType, date);
+            return new HTTPResponseHeaders(responseCode, contentType, date, "GET,OPTIONS");
+        else
+            return new HTTPResponseHeaders(responseCode, contentType, date);
     }
 
     @Override
