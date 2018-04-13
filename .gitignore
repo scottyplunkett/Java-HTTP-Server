@@ -12,7 +12,7 @@ modules.xml
 ./
 
 # Log file
-logs/
+logs/logs.html
 
 # BlueJ files
 *.ctxt

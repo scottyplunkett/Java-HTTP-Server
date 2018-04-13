@@ -10,12 +10,11 @@ import java.util.concurrent.Executors;
 
 
 class HTTPServer {
-    private static ProgramArguments programArguments;
     private ExecutorService pool;
     private ServerSocket internalConnection;
 
     public static void main(String[] args) throws IOException {
-        programArguments = new ProgramArguments(args);
+        ProgramArguments programArguments = new ProgramArguments(args);
         int port = programArguments.getPort();
         ServerSocket serverSocket = new ServerSocket(port);
         int processingCoresAvailable = Runtime.getRuntime().availableProcessors();
