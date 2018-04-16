@@ -1,5 +1,7 @@
 package com.scottyplunkett.server;
 
+import com.scottyplunkett.server.Cycle.RequestResponseCycle;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,11 +12,12 @@ import java.util.concurrent.Executors;
 
 
 class HTTPServer {
+    private static ProgramArguments programArguments;
     private ExecutorService pool;
     private ServerSocket internalConnection;
 
     public static void main(String[] args) throws IOException {
-        ProgramArguments programArguments = new ProgramArguments(args);
+        programArguments = new ProgramArguments(args);
         int port = programArguments.getPort();
         ServerSocket serverSocket = new ServerSocket(port);
         int processingCoresAvailable = Runtime.getRuntime().availableProcessors();
