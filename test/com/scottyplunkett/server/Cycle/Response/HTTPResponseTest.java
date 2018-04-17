@@ -1,9 +1,8 @@
 package com.scottyplunkett.server.Cycle.Response;
 
+import com.scottyplunkett.server.Cycle.Response.Behavior.handlers.*;
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
-import com.scottyplunkett.server.Cycle.Response.HTTPResponse;
-import com.scottyplunkett.server.Cycle.Routing.Router;
-import com.scottyplunkett.server.Cycle.Behavior.handlers.*;
+import com.scottyplunkett.server.Cycle.Response.Routing.Router;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

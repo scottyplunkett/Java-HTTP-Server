@@ -1,6 +1,6 @@
 package com.scottyplunkett.server.Cycle;
 
-import com.scottyplunkett.server.Cycle.Behavior.Behavior;
+import com.scottyplunkett.server.Cycle.Response.Behavior.Behavior;
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
 import com.scottyplunkett.server.Cycle.Response.HTTPResponse;
 

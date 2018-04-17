@@ -18,8 +18,7 @@ class HTTPServer {
 
     public static void main(String[] args) throws IOException {
         programArguments = new ProgramArguments(args);
-        int port = programArguments.getPort();
-        ServerSocket serverSocket = new ServerSocket(port);
+        ServerSocket serverSocket = new ServerSocket(programArguments.getPort());
         int processingCoresAvailable = Runtime.getRuntime().availableProcessors();
         new HTTPServer(serverSocket, Executors.newFixedThreadPool(processingCoresAvailable)).start();
     }

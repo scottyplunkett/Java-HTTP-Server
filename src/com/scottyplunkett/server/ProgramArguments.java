@@ -3,19 +3,15 @@ package com.scottyplunkett.server;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 class ProgramArguments {
     private final int firstArg = 0;
     private String[] args;
-    private Stream<String> streamArgs;
     private int port;
     private Path root;
 
     ProgramArguments(String[] _args) {
         args = _args;
-        streamArgs = Arrays.stream(args);
         setPort();
         setRoot();
     }

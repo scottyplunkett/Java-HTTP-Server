@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 public class Parser {
     static final Function<String, String[]> splitBySpace = string -> string.split("\\s+");
-    static final Function<String, String[]> splitByQuestionMark = string -> string.split("\\?");
+    public static final Function<String, String[]> splitByQuestionMark = string -> string.split("\\?");
 
     public static String findRequestMethod(String requestLine) {
         return splitBySpace.apply(requestLine)[0];

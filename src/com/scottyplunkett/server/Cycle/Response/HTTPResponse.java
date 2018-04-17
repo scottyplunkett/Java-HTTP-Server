@@ -2,7 +2,7 @@ package com.scottyplunkett.server.Cycle.Response;
 
 import com.scottyplunkett.server.Cycle.Utils.Date;
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
-import com.scottyplunkett.server.Cycle.Behavior.handlers.Handler;
+import com.scottyplunkett.server.Cycle.Response.Behavior.handlers.Handler;
 
 import java.io.IOException;
 
