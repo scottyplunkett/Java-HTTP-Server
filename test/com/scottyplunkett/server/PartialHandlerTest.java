@@ -10,7 +10,7 @@ import java.util.Arrays;
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class PartialContentResponseTest {
+class PartialHandlerTest {
     @Test
     void getRangeOfPartialContent() throws IOException {
         String requestPartialContent = "GET /partial_content.txt HTTP/1.1\r\nRange: bytes=0-4\r\nline3\r\n\r\n";
@@ -23,7 +23,7 @@ class PartialContentResponseTest {
         byte[] partialContent = "This is a file that contains text to read part of in order to fulfill a 206.\n".getBytes();
         byte[] body = Arrays.copyOfRange(partialContent,0,5);
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new PartialContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new PartialHandler(request, "bla").get());
     }
 
     @Test
@@ -38,7 +38,7 @@ class PartialContentResponseTest {
         byte[] partialContent = "This is a file that contains text to read part of in order to fulfill a 206.\n".getBytes();
         byte[] body = Arrays.copyOfRange(partialContent,71,77);
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new PartialContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new PartialHandler(request, "bla").get());
     }
 
 }

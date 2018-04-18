@@ -9,14 +9,14 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class ImageContentResponseTest {
+class ImageHandlerTest {
 
     @Test
     void getJPEG() throws IOException {
         Path jpegPath = Paths.get("public/image.jpeg");
         byte[] expectedImage = Files.readAllBytes(jpegPath);
         String requestLine = "GET /image.jpeg HTTP/1.1";
-        assertArrayEquals(expectedImage, new ImageContentResponse(requestLine).getImageData());
+        assertArrayEquals(expectedImage, new ImageHandler(requestLine).getImageData());
     }
 
     @Test
@@ -24,7 +24,7 @@ class ImageContentResponseTest {
         Path gifPath = Paths.get("public/image.gif");
         byte[] expectedImage = Files.readAllBytes(gifPath);
         String requestLine = "GET /image.gif HTTP/1.1";
-        assertArrayEquals(expectedImage, new ImageContentResponse(requestLine).getImageData());
+        assertArrayEquals(expectedImage, new ImageHandler(requestLine).getImageData());
     }
 
     @Test
@@ -32,6 +32,6 @@ class ImageContentResponseTest {
         Path pngPath = Paths.get("public/image.png");
         byte[] expectedImage = Files.readAllBytes(pngPath);
         String requestLine = "GET /image.png HTTP/1.1";
-        assertArrayEquals(expectedImage, new ImageContentResponse(requestLine).getImageData());
+        assertArrayEquals(expectedImage, new ImageHandler(requestLine).getImageData());
     }
 }
