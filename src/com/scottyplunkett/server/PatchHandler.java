@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-class PatchContentResponse {
+class PatchHandler {
     private String responseContent;
     private String headers;
     private String body;
@@ -16,7 +16,7 @@ class PatchContentResponse {
     private final byte[] patchBytes = "patched content".getBytes();
     private final Path path = Paths.get("public/patch-content.txt");
 
-    PatchContentResponse(HTTPRequest request, String date) throws IOException {
+    PatchHandler(HTTPRequest request, String date) throws IOException {
         String requestLine = request.getRequestLine();
         String requestMethod = requestLine.split("\\s")[0];
         if("PATCH".equals(requestMethod)) {

@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class LogContentResponseTest {
+class LogsHandlerTest {
     @Test
     void getLogsReturns401WithoutAuth() throws IOException {
         String requestLogs = "GET /logs HTTP/1.1\r\nline 4\r\nline3\r\n";
@@ -21,7 +21,7 @@ class LogContentResponseTest {
                                                "WWW-Authenticate: Basic realm=\"Logs\"\r\n\r\n").getBytes();
         byte[] body = "401 Unauthorized... Probably Above Your Paygrade.".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new LogContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new LogsHandler(request, "bla").get());
     }
 
     @Test
@@ -32,6 +32,6 @@ class LogContentResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = Files.readAllBytes(Paths.get("logs/logs.html"));
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new LogContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new LogsHandler(request, "bla").get());
     }
 }

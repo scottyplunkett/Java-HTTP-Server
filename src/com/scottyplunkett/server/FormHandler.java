@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-public class FormContentResponse {
+public class FormHandler {
     private final Path formPath = Paths.get("pages/form.html");
     private HTTPRequest httpRequest;
     private String method;
@@ -16,7 +16,7 @@ public class FormContentResponse {
     private byte[] responseContent;
 
 
-    FormContentResponse(HTTPRequest request, String date) throws IOException {
+    FormHandler(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
         method = Parser.findRequestMethod(httpRequest.getRequestLine());
         if(method.equals("POST") || method.equals("PUT")) writeToForm();

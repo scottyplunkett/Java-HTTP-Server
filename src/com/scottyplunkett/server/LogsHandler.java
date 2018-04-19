@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-class LogContentResponse {
+class LogsHandler {
     private final String authHeader = "WWW-Authenticate: Basic realm=\"Logs\"";
     private HTTPRequest httpRequest;
     private boolean authorized;
@@ -14,7 +14,7 @@ class LogContentResponse {
     private byte[] body;
     private byte[] responseContent;
 
-    LogContentResponse(HTTPRequest request, String date) throws IOException {
+    LogsHandler(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
         if(isAuthorized()) {
             head = (new HTTPResponseHeaders("200 OK", "text/html", date).get() + "\r\n").getBytes();

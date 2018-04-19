@@ -9,7 +9,7 @@ import java.io.InputStream;
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class FormContentResponseTest {
+class FormHandlerTest {
     @Test
     void getPost() throws IOException {
         String requestPostToForm = "POST /form HTTP/1.1\r\nContent-Length: 11\r\nline3\r\n\r\ndata=fatcat";
@@ -18,7 +18,7 @@ class FormContentResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "<h1>data=fatcat</h1>".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new FormContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new FormHandler(request, "bla").get());
     }
 
     @Test
@@ -29,7 +29,7 @@ class FormContentResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "<h1>data=healthcliff</h1>".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new FormContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new FormHandler(request, "bla").get());
     }
 
     @Test
@@ -40,7 +40,7 @@ class FormContentResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new FormContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new FormHandler(request, "bla").get());
     }
 
 }

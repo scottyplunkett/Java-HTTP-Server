@@ -19,17 +19,17 @@ class HTTPResponse {
         String requestedRoute = Parser.findRequestedRoute(requestLine);
         String method = Parser.findRequestMethod(requestLine);
         if(requestLine.contains("PATCH")) {
-            responseContent = new PatchContentResponse(request, date).get().getBytes();
+            responseContent = new PatchHandler(request, date).get().getBytes();
         } else if(requestLine.contains("image")) {
-            responseContent = new ImageContentResponse(requestLine, date).get();
+            responseContent = new ImageHandler(requestLine, date).get();
         } else if(requestLine.contains("cookie")) {
-            responseContent = new CookieContentResponse(request, date).get();
+            responseContent = new CookieHandler(request, date).get();
         } else if(requestLine.contains("logs")) {
-            responseContent = new LogContentResponse(request, date).get();
+            responseContent = new LogsHandler(request, date).get();
         } else if(requestLine.contains("form")) {
-            responseContent = new FormContentResponse(request, date).get();
+            responseContent = new FormHandler(request, date).get();
         } else if(requestLine.contains("partial_content")) {
-            responseContent = new PartialContentResponse(request, date).get();
+            responseContent = new PartialHandler(request, date).get();
         } else {
             if((requestedRoute.equals("/file1") ||
                requestedRoute.equals("/text-file.txt")) &&

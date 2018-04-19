@@ -6,18 +6,18 @@ import java.nio.file.Path;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-class ImageContentResponse {
+class ImageHandler {
     private Path imagePath;
     private String type;
     private byte[] imageData;
     private byte[] imageHeaders;
     private byte[] response;
 
-    ImageContentResponse(String requestLine) throws IOException {
+    ImageHandler(String requestLine) throws IOException {
         this(requestLine, Date.getDate());
     }
 
-    ImageContentResponse(String requestLine, String date) throws IOException {
+    ImageHandler(String requestLine, String date) throws IOException {
         imagePath = Router.route(requestLine);
         type = Files.probeContentType(imagePath);
         imageData = Files.readAllBytes(imagePath);

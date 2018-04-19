@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 
-class PartialContentResponse {
+class PartialHandler {
     private final Path partialContentPath = Paths.get("public/partial_content.txt");
 
     private HTTPRequest httpRequest;
@@ -21,7 +21,7 @@ class PartialContentResponse {
     private byte[] body;
     private byte[] responseContent;
 
-    PartialContentResponse(HTTPRequest request, String date) throws IOException {
+    PartialHandler(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
         fileContents = Files.readAllBytes(partialContentPath);
         totalBytes = fileContents.length;

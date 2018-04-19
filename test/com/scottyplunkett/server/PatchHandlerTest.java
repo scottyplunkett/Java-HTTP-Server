@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PatchContentResponseTest {
+class PatchHandlerTest {
 
     @Test
     void getResponseToGetRequestForPatchContent() throws IOException {
@@ -16,7 +16,7 @@ class PatchContentResponseTest {
         InputStream in = new ByteArrayInputStream(requestGetPatchContent.getBytes());
         HTTPRequest request = new HTTPRequest(in);
         String expectedHeaders = "HTTP/1.1 200 OK\r\nDate: bla\r\nContent-Type: text/plain\r\n";
-        assertEquals(expectedHeaders + "\r\n" + "default content", new PatchContentResponse(request, "bla").get());
+        assertEquals(expectedHeaders + "\r\n" + "default content", new PatchHandler(request, "bla").get());
     }
 
     @Test
@@ -26,7 +26,7 @@ class PatchContentResponseTest {
         InputStream in = new ByteArrayInputStream(requestGetPatchContent.getBytes());
         HTTPRequest request = new HTTPRequest(in);
         String expectedHeaders = "HTTP/1.1 204\r\nDate: bla\r\nContent-Type: text/plain\r\n";
-        assertEquals(expectedHeaders + "\r\n", new PatchContentResponse(request, "bla").get());
+        assertEquals(expectedHeaders + "\r\n", new PatchHandler(request, "bla").get());
     }
 
     @Test
@@ -38,7 +38,7 @@ class PatchContentResponseTest {
                 "patched content";
         InputStream in = new ByteArrayInputStream(requestPatchContent.getBytes());
         HTTPRequest request = new HTTPRequest(in);
-        PatchContentResponse patchContentResponse = new PatchContentResponse(request, "bla");
+        PatchHandler patchHandler = new PatchHandler(request, "bla");
         Path patchContentPath = Paths.get("public/patch-content.txt");
         PageContent pageContent = new PageContent(patchContentPath, request.getRequestLine());
         assertEquals("patched content", pageContent.get());
@@ -50,7 +50,7 @@ class PatchContentResponseTest {
                 "default content";
         InputStream in2 = new ByteArrayInputStream(secondRequestPatchContent.getBytes());
         HTTPRequest request2 = new HTTPRequest(in2);
-        PatchContentResponse secondPatchContentResponse = new PatchContentResponse(request2, "bla");
+        PatchHandler secondPatchHandler = new PatchHandler(request2, "bla");
         PageContent pageContent2 = new PageContent(patchContentPath, request2.getRequestLine());
         assertEquals("default content", pageContent2.get());
     }

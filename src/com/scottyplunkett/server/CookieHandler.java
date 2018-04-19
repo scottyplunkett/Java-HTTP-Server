@@ -6,18 +6,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-class CookieContentResponse {
+class CookieHandler {
     private String cookieValue;
     private Path cookieContentPath;
     private String cookieResponseBody;
     private String cookieResponseHeaders;
     private byte[] response;
 
-    CookieContentResponse(HTTPRequest request, String date) throws IOException {
+    CookieHandler(HTTPRequest request, String date) throws IOException {
         this(request, Paths.get("pages/cookie.html"), date);
     }
 
-    CookieContentResponse(HTTPRequest request, Path path, String date) throws IOException {
+    CookieHandler(HTTPRequest request, Path path, String date) throws IOException {
         cookieContentPath = path;
         cookieValue = request.getCookie();
         cookieResponseBody = request.getRequestLine().contains("/eat_cookie") ?

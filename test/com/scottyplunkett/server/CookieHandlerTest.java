@@ -9,7 +9,7 @@ import java.io.InputStream;
 import static com.scottyplunkett.server.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class CookieContentResponseTest {
+class CookieHandlerTest {
 
     @Test
     void get() throws IOException {
@@ -20,7 +20,7 @@ class CookieContentResponseTest {
         HTTPResponseHeaders headersBeforeAppend = new HTTPResponseHeaders("200 OK", "text/html", "bla");
         byte[] head = (headersBeforeAppend.get() + "Set-Cookie: chocolate\r\n" + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new CookieContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new CookieHandler(request, "bla").get());
     }
 
     @Test
@@ -32,6 +32,6 @@ class CookieContentResponseTest {
         HTTPResponseHeaders headersBeforeAppend = new HTTPResponseHeaders("200 OK", "text/html", "bla");
         byte[] head = (headersBeforeAppend.get() + "Set-Cookie: chocolate\r\n" + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new CookieContentResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new CookieHandler(request, "bla").get());
     }
 }
