@@ -1,4 +1,4 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
 enum HTTPResponseCode {
     OK(200, "200 OK"),

@@ -1,5 +1,6 @@
 package com.scottyplunkett.server;
 
+import com.scottyplunkett.server.Cycle.ImageHandler;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
 class HTTPResponseHeaders {
     private static final String CRLF = "\r\n";

@@ -1,11 +1,14 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
+
+import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
+import com.scottyplunkett.server.Cycle.Utils.Parser;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.scottyplunkett.server.ByteArraysReducer.merge;
+import static com.scottyplunkett.server.Cycle.Utils.ByteArraysReducer.merge;
 
 public class FormHandler {
     private final Path formPath = Paths.get("pages/form.html");

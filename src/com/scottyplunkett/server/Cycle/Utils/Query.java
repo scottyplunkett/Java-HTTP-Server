@@ -1,4 +1,4 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

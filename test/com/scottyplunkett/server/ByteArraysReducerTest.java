@@ -1,5 +1,6 @@
 package com.scottyplunkett.server;
 
+import com.scottyplunkett.server.Cycle.ByteArraysReducer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

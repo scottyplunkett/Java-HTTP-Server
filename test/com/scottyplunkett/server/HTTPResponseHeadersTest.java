@@ -1,5 +1,7 @@
 package com.scottyplunkett.server;
 
+import com.scottyplunkett.server.Cycle.Date;
+import com.scottyplunkett.server.Cycle.HTTPResponseHeaders;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
