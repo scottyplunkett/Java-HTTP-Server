@@ -1,5 +1,6 @@
 package com.scottyplunkett.server;
 
+import com.scottyplunkett.server.Cycle.HTTPResponseCode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

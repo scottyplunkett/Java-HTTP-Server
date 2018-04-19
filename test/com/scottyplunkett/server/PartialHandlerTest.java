@@ -1,5 +1,8 @@
 package com.scottyplunkett.server;
 
+import com.scottyplunkett.server.Cycle.HTTPRequest;
+import com.scottyplunkett.server.Cycle.HTTPResponseHeaders;
+import com.scottyplunkett.server.Cycle.PartialHandler;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -7,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 
-import static com.scottyplunkett.server.ByteArraysReducer.merge;
+import static com.scottyplunkett.server.Cycle.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class PartialHandlerTest {

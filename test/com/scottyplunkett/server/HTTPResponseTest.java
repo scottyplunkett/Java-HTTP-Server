@@ -1,5 +1,9 @@
 package com.scottyplunkett.server;
 
+import com.scottyplunkett.server.Cycle.HTTPRequest;
+import com.scottyplunkett.server.Cycle.HTTPResponse;
+import com.scottyplunkett.server.Cycle.HTTPResponseHeaders;
+import com.scottyplunkett.server.Cycle.Router;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -10,7 +14,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-import static com.scottyplunkett.server.ByteArraysReducer.merge;
+import static com.scottyplunkett.server.Cycle.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class HTTPResponseTest {

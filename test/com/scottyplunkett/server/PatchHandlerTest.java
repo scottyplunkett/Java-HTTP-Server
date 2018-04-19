@@ -1,5 +1,8 @@
 package com.scottyplunkett.server;
 
+import com.scottyplunkett.server.Cycle.HTTPRequest;
+import com.scottyplunkett.server.Cycle.PageContent;
+import com.scottyplunkett.server.Cycle.PatchHandler;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;

@@ -1,4 +1,6 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
+
+import com.scottyplunkett.server.Cycle.Query;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

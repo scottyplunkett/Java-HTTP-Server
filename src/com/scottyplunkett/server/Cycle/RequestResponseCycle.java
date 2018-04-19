@@ -1,4 +1,9 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle;
+
+import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
+import com.scottyplunkett.server.Cycle.Response.HTTPResponse;
+import com.scottyplunkett.server.HTTPRequest;
+import com.scottyplunkett.server.HTTPResponse;
 
 import java.io.IOException;
 import java.io.InputStream;

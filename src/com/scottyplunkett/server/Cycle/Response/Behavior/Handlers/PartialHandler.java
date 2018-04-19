@@ -1,4 +1,8 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
+
+import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
+import com.scottyplunkett.server.HTTPRequest;
+import com.scottyplunkett.server.HTTPResponseHeaders;
 
 import java.io.IOException;
 import java.nio.file.Files;

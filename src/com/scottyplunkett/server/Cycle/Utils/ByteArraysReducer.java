@@ -1,4 +1,4 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Utils;
 
 class ByteArraysReducer {
     static byte[] merge(byte[] body, byte[] head) {
