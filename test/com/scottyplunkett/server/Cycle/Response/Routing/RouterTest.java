@@ -1,6 +1,5 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Routing;
 
-import com.scottyplunkett.server.Cycle.Router;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;

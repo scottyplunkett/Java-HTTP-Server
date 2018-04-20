@@ -1,15 +1,13 @@
 package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
-import com.scottyplunkett.server.HTTPRequest;
-import com.scottyplunkett.server.HTTPResponseBody;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-class PatchHandler {
+public class PatchHandler {
     private String responseContent;
     private String headers;
     private String body;
@@ -20,7 +18,7 @@ class PatchHandler {
     private final byte[] patchBytes = "patched content".getBytes();
     private final Path path = Paths.get("public/patch-content.txt");
 
-    PatchHandler(HTTPRequest request, String date) throws IOException {
+    public PatchHandler(HTTPRequest request, String date) throws IOException {
         String requestLine = request.getRequestLine();
         String requestMethod = requestLine.split("\\s")[0];
         if("PATCH".equals(requestMethod)) {
@@ -34,7 +32,7 @@ class PatchHandler {
         responseContent = headers + "\r\n" + body;
     }
 
-    String get() {
+    public String get() {
         return responseContent;
     }
 

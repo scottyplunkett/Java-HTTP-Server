@@ -19,7 +19,7 @@ public class FormHandler {
     private byte[] responseContent;
 
 
-    FormHandler(HTTPRequest request, String date) throws IOException {
+    public FormHandler(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
         method = Parser.findRequestMethod(httpRequest.getRequestLine());
         if(method.equals("POST") || method.equals("PUT")) writeToForm();
@@ -38,7 +38,7 @@ public class FormHandler {
         Files.write(formPath, "".getBytes());
     }
 
-    byte[] get() {
+    public byte[] get() {
         return responseContent;
     }
 }

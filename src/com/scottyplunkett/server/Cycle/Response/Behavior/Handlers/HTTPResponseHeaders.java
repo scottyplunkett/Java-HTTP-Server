@@ -1,6 +1,6 @@
 package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
-class HTTPResponseHeaders {
+public class HTTPResponseHeaders {
     private static final String CRLF = "\r\n";
     private String responseHeadersContent;
     private String statusLine;
@@ -8,7 +8,7 @@ class HTTPResponseHeaders {
     private String dateLine;
     private String contentTypeLine;
 
-    HTTPResponseHeaders(String status, String contentType, String date) {
+    public HTTPResponseHeaders(String status, String contentType, String date) {
         statusLine = "HTTP/1.1 " + status + CRLF;
         locationLine = "Location: /\r\n";
         dateLine = "Date: " + date + CRLF;
@@ -17,7 +17,7 @@ class HTTPResponseHeaders {
         responseHeadersContent = statusLine + dateLine + contentTypeLine;
     }
 
-    HTTPResponseHeaders(String status, String contentType, String date, String options) {
+    public HTTPResponseHeaders(String status, String contentType, String date, String options) {
         String optionsLine;
         statusLine = "HTTP/1.1 " + status + CRLF;
         optionsLine = "Allow: " + options + CRLF;
@@ -26,7 +26,7 @@ class HTTPResponseHeaders {
         responseHeadersContent = statusLine + optionsLine + dateLine + contentTypeLine;
     }
 
-    String get() {
+    public String get() {
         return responseHeadersContent;
     }
 }

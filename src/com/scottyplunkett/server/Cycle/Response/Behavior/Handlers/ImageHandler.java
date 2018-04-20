@@ -1,17 +1,15 @@
 package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
-import com.scottyplunkett.server.Cycle.Date;
-import com.scottyplunkett.server.Cycle.Router;
-import com.scottyplunkett.server.Date;
-import com.scottyplunkett.server.HTTPResponseHeaders;
+import com.scottyplunkett.server.Cycle.Response.Routing.Router;
+import com.scottyplunkett.server.Cycle.Utils.Date;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.scottyplunkett.server.ByteArraysReducer.merge;
+import static com.scottyplunkett.server.Cycle.Utils.ByteArraysReducer.merge;
 
-class ImageHandler {
+public class ImageHandler {
     private Path imagePath;
     private String type;
     private byte[] imageData;
@@ -22,7 +20,7 @@ class ImageHandler {
         this(requestLine, Date.getDate());
     }
 
-    ImageHandler(String requestLine, String date) throws IOException {
+    public ImageHandler(String requestLine, String date) throws IOException {
         imagePath = Router.route(requestLine);
         type = Files.probeContentType(imagePath);
         imageData = Files.readAllBytes(imagePath);
@@ -30,7 +28,7 @@ class ImageHandler {
         response = merge(imageData, imageHeaders);
     }
 
-    byte[] get() {
+    public byte[] get() {
         return response;
     }
 

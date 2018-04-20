@@ -9,14 +9,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
-class CookieHandler {
+public class CookieHandler {
     private String cookieValue;
     private Path cookieContentPath;
     private String cookieResponseBody;
     private String cookieResponseHeaders;
     private byte[] response;
 
-    CookieHandler(HTTPRequest request, String date) throws IOException {
+    public CookieHandler(HTTPRequest request, String date) throws IOException {
         this(request, Paths.get("pages/cookie.html"), date);
     }
 

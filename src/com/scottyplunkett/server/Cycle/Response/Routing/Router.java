@@ -3,7 +3,7 @@ package com.scottyplunkett.server.Cycle.Response.Routing;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-class Router {
+public class Router {
     public static Path route(String requestLine) {
         if (hasParameters(requestLine))
             return containsCookie(requestLine) ? Paths.get("pages/cookie.html") : Paths.get("pages/dynamic.html");

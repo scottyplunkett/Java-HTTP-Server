@@ -1,15 +1,13 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
-import com.scottyplunkett.server.Cycle.Response.Behavior.Handlers.FormHandler;
-import com.scottyplunkett.server.Cycle.HTTPRequest;
-import com.scottyplunkett.server.Cycle.HTTPResponseHeaders;
+import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.scottyplunkett.server.Cycle.ByteArraysReducer.merge;
+import static com.scottyplunkett.server.Cycle.Utils.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class FormHandlerTest {

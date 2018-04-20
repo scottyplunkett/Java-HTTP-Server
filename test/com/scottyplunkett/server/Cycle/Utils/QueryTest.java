@@ -1,6 +1,5 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Utils;
 
-import com.scottyplunkett.server.Cycle.Query;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;

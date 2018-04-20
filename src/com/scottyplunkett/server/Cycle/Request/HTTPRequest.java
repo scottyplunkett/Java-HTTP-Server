@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class HTTPRequest {
+public class HTTPRequest {
     private ArrayList<String> requestContent;
     private String requestLine;
     private String eTag;
@@ -17,7 +17,7 @@ class HTTPRequest {
     private String range;
     private BufferedReader reader;
 
-    HTTPRequest(InputStream in) throws IOException {
+    public HTTPRequest(InputStream in) throws IOException {
         requestContent = new ArrayList<>();
         reader = new BufferedReader(new InputStreamReader(in));
         StringBuilder fullRequest = new StringBuilder();
@@ -56,27 +56,27 @@ class HTTPRequest {
         body = requestContent.get(index);
     }
 
-    String getRequestLine() {
+    public String getRequestLine() {
         return requestLine;
     }
 
-    String getEtag() {
+    public String getEtag() {
         return eTag;
     }
 
-    String getBody() {
+    public String getBody() {
         return body;
     }
 
-    String getCookie() {
+    public String getCookie() {
         return cookie;
     }
 
-    String getAuthorization() {
+    public String getAuthorization() {
         return authorization;
     }
 
-    String getRange() {
+    public String getRange() {
         return range;
     }
 

@@ -1,6 +1,5 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Request;
 
-import com.scottyplunkett.server.Cycle.HTTPRequest;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

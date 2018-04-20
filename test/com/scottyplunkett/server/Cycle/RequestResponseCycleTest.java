@@ -1,6 +1,5 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle;
 
-import com.scottyplunkett.server.Cycle.RequestResponseCycle;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

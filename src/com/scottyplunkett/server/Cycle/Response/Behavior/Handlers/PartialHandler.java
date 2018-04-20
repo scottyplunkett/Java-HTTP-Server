@@ -1,8 +1,6 @@
 package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
-import com.scottyplunkett.server.HTTPRequest;
-import com.scottyplunkett.server.HTTPResponseHeaders;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,9 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import static com.scottyplunkett.server.ByteArraysReducer.merge;
+import static com.scottyplunkett.server.Cycle.Utils.ByteArraysReducer.merge;
 
-class PartialHandler {
+public class PartialHandler {
     private final Path partialContentPath = Paths.get("public/partial_content.txt");
 
     private HTTPRequest httpRequest;
@@ -25,7 +23,7 @@ class PartialHandler {
     private byte[] body;
     private byte[] responseContent;
 
-    PartialHandler(HTTPRequest request, String date) throws IOException {
+    public PartialHandler(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
         fileContents = Files.readAllBytes(partialContentPath);
         totalBytes = fileContents.length;
@@ -49,7 +47,7 @@ class PartialHandler {
         responseContent = merge(body, head);
     }
 
-    byte[] get() {
+    public byte[] get() {
         return responseContent;
     }
 }

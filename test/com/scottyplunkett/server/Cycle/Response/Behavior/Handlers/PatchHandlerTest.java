@@ -1,11 +1,11 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
-import com.scottyplunkett.server.Cycle.HTTPRequest;
-import com.scottyplunkett.server.Cycle.PageContent;
-import com.scottyplunkett.server.Cycle.PatchHandler;
+import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

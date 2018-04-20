@@ -1,6 +1,5 @@
-package com.scottyplunkett.server;
+package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
-import com.scottyplunkett.server.Cycle.HTTPResponseBody;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

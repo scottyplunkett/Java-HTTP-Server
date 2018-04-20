@@ -1,6 +1,6 @@
 package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
-enum HTTPResponseCode {
+public enum HTTPResponseCode {
     OK(200, "200 OK"),
     PARTIAL_CONTENT(206, "206 Partial Content"),
     NO_CONTENT(204, "204 No Content"),
@@ -23,7 +23,7 @@ enum HTTPResponseCode {
     }
 
 
-    static String retrieve(int code) {
+    public static String retrieve(int code) {
         String status = "";
 
         for (HTTPResponseCode encoded : values()) {

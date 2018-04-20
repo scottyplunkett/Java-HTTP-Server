@@ -1,16 +1,14 @@
 package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
-import com.scottyplunkett.server.HTTPRequest;
-import com.scottyplunkett.server.HTTPResponseHeaders;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static com.scottyplunkett.server.ByteArraysReducer.merge;
+import static com.scottyplunkett.server.Cycle.Utils.ByteArraysReducer.merge;
 
-class LogsHandler {
+public class LogsHandler {
     private final String authHeader = "WWW-Authenticate: Basic realm=\"Logs\"";
     private HTTPRequest httpRequest;
     private boolean authorized;
@@ -18,7 +16,7 @@ class LogsHandler {
     private byte[] body;
     private byte[] responseContent;
 
-    LogsHandler(HTTPRequest request, String date) throws IOException {
+    public LogsHandler(HTTPRequest request, String date) throws IOException {
         httpRequest = request;
         if(isAuthorized()) {
             head = (new HTTPResponseHeaders("200 OK", "text/html", date).get() + "\r\n").getBytes();
@@ -34,7 +32,7 @@ class LogsHandler {
         return "Basic YWRtaW46aHVudGVyMg==".equals(httpRequest.getAuthorization());
     }
 
-    byte[] get() {
+    public byte[] get() {
         return responseContent;
     }
 }
