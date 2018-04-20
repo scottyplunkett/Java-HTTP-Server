@@ -1,18 +1,21 @@
 package com.scottyplunkett.server.Cycle.Response;
 
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
-import com.scottyplunkett.server.Cycle.Response.Behavior.Handlers.FormHandler;
+import com.scottyplunkett.server.Cycle.Response.Behavior.Handlers.*;
+import com.scottyplunkett.server.Cycle.Response.Routing.Router;
+import com.scottyplunkett.server.Cycle.Utils.Date;
+import com.scottyplunkett.server.Cycle.Utils.Parser;
 
 import java.io.IOException;
 import java.nio.file.Files;
 
-class HTTPResponse {
+public class HTTPResponse {
     private HTTPRequest httpRequest;
     private byte[] responseContent;
     private HTTPResponseHeaders headers;
     private HTTPResponseBody body;
 
-    HTTPResponse(HTTPRequest request) throws IOException {
+    public HTTPResponse(HTTPRequest request) throws IOException {
         this(request, Date.getDate());
     }
 
@@ -68,7 +71,7 @@ class HTTPResponse {
         }
     }
 
-    byte[] get() {
+    public byte[] get() {
         return responseContent;
     }
 }

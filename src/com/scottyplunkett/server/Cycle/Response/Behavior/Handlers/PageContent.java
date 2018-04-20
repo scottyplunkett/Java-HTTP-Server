@@ -1,6 +1,6 @@
 package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
-import com.scottyplunkett.server.Cycle.Query;
+import com.scottyplunkett.server.Cycle.Utils.Query;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Collectors;
 
-class PageContent {
+public class PageContent {
     private String pageContent;
 
     PageContent(Path pagesPath, String requested) throws IOException {

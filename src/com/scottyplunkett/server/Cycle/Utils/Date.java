@@ -5,9 +5,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-class Date {
+public class Date {
 
-    static String getDate() {
+    public static String getDate() {
         Calendar calendar = Calendar.getInstance();
         String format = "EEE, dd MMM yyyy HH:mm:ss z";
         SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);

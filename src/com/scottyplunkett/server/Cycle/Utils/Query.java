@@ -3,14 +3,14 @@ package com.scottyplunkett.server.Cycle.Utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-class Query {
+public class Query {
     private String[] queryElements;
 
     public String[] getParams() {
         return queryElements;
     }
 
-    Query(String requested) throws UnsupportedEncodingException {
+    public Query(String requested) throws UnsupportedEncodingException {
         String query = requested.split("\\?")[1];
         setQueryElements(query);
     }

@@ -2,8 +2,6 @@ package com.scottyplunkett.server.Cycle;
 
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
 import com.scottyplunkett.server.Cycle.Response.HTTPResponse;
-import com.scottyplunkett.server.HTTPRequest;
-import com.scottyplunkett.server.HTTPResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-class RequestResponseCycle implements Runnable {
+public class RequestResponseCycle implements Runnable {
     private final Path logPath = Paths.get("Logs/logs.html");
 
     private Socket socket;
@@ -24,7 +22,7 @@ class RequestResponseCycle implements Runnable {
     private HTTPResponse response;
     private byte[] message;
 
-    RequestResponseCycle(Socket connection, InputStream input, OutputStream output) throws IOException {
+    public RequestResponseCycle(Socket connection, InputStream input, OutputStream output) throws IOException {
         socket = connection;
         in = input;
         out = output;
