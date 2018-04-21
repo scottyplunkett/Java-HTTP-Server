@@ -10,23 +10,20 @@ import java.nio.file.Paths;
 
 import static com.scottyplunkett.server.Cycle.Utils.ByteArraysReducer.merge;
 
-public class FormHandler {
-    private final Path formPath = Paths.get("pages/form.html");
+public class FormHandler extends Handler {
     private HTTPRequest httpRequest;
+    private String date;
+    private final Path formPath = Paths.get("pages/form.html");
     private String method;
     private byte[] head;
     private byte[] body;
     private byte[] responseContent;
 
+    public FormHandler() {}
 
-    public FormHandler(HTTPRequest request, String date) throws IOException {
+    FormHandler(HTTPRequest request, String _date) {
         httpRequest = request;
-        method = Parser.findRequestMethod(httpRequest.getRequestLine());
-        if(method.equals("POST") || method.equals("PUT")) writeToForm();
-        if(method.equals("DELETE")) deleteFormData();
-        head = (new HTTPResponseHeaders("200 OK", "text/html", date).get() + "\r\n").getBytes();
-        body = Files.readAllBytes(formPath);
-        responseContent = merge(body, head);
+        date = _date;
     }
 
     private void writeToForm() throws IOException {
@@ -40,5 +37,31 @@ public class FormHandler {
 
     public byte[] get() {
         return responseContent;
+    }
+
+    public void setHttpRequest(HTTPRequest httpRequest) {
+        this.httpRequest = httpRequest;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    @Override
+    public void produceContent() throws IOException {
+        method = Parser.findRequestMethod(httpRequest.getRequestLine());
+        writeOnPostOrPut();
+        deleteOnDelete();
+        head = (new HTTPResponseHeaders("200 OK", "text/html", date).get() + "\r\n").getBytes();
+        body = Files.readAllBytes(formPath);
+        responseContent = merge(body, head);
+    }
+
+    private void deleteOnDelete() throws IOException {
+        if(method.equals("DELETE")) deleteFormData();
+    }
+
+    private void writeOnPostOrPut() throws IOException {
+        if(method.equals("POST") || method.equals("PUT")) writeToForm();
     }
 }

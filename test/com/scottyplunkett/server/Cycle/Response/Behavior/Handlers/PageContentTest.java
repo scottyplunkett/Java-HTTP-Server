@@ -16,15 +16,15 @@ class PageContentTest {
         Path nicolePagePath = Router.route(nicoleRequest);
         String expectedContent =
                 "<!DOCTYPE html>" +
-                "<html lang=\"en\">" +
-                "<head>" +
-                "    <meta charset=\"UTF-8\">" +
-                "    <title>NICOLE</title>" +
-                "</head>" +
-                "<body>" +
-                "NICOLE'S PAGE" +
-                "</body>" +
-                "</html>";
+                        "<html lang=\"en\">" +
+                        "<head>" +
+                        "    <meta charset=\"UTF-8\">" +
+                        "    <title>NICOLE</title>" +
+                        "</head>" +
+                        "<body>" +
+                        "NICOLE'S PAGE" +
+                        "</body>" +
+                        "</html>";
         String actualContent = new PageContent(nicolePagePath, nicoleRequest).get();
         assertEquals(expectedContent, actualContent);
     }

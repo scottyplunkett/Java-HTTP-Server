@@ -19,7 +19,11 @@ class FormHandlerTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "<h1>data=fatcat</h1>".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new FormHandler(request, "bla").get());
+        FormHandler formHandler = new FormHandler();
+        formHandler.setHttpRequest(request);
+        formHandler.setDate("bla");
+        formHandler.produceContent();
+        assertArrayEquals(expectedResponse, formHandler.get());
     }
 
     @Test
@@ -30,7 +34,11 @@ class FormHandlerTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "<h1>data=healthcliff</h1>".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new FormHandler(request, "bla").get());
+        FormHandler formHandler = new FormHandler();
+        formHandler.setHttpRequest(request);
+        formHandler.setDate("bla");
+        formHandler.produceContent();
+        assertArrayEquals(expectedResponse, formHandler.get());
     }
 
     @Test
@@ -41,7 +49,11 @@ class FormHandlerTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new FormHandler(request, "bla").get());
+        FormHandler formHandler = new FormHandler();
+        formHandler.setHttpRequest(request);
+        formHandler.setDate("bla");
+        formHandler.produceContent();
+        assertArrayEquals(expectedResponse, formHandler.get());
     }
 
 }

@@ -19,10 +19,12 @@ class LogsHandlerTest {
         InputStream in = new ByteArrayInputStream(requestLogs.getBytes());
         HTTPRequest request = new HTTPRequest(in);
         byte[] head = (new HTTPResponseHeaders("401 Unauthorized", "text/html", "bla").get() +
-                                               "WWW-Authenticate: Basic realm=\"Logs\"\r\n\r\n").getBytes();
+                "WWW-Authenticate: Basic realm=\"Logs\"\r\n\r\n").getBytes();
         byte[] body = "401 Unauthorized... Probably Above Your Paygrade.".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new LogsHandler(request, "bla").get());
+        LogsHandler logsHandler = new LogsHandler(request, "bla");
+        logsHandler.produceContent();
+        assertArrayEquals(expectedResponse, logsHandler.get());
     }
 
     @Test
@@ -33,6 +35,8 @@ class LogsHandlerTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = Files.readAllBytes(Paths.get("logs/logs.html"));
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new LogsHandler(request, "bla").get());
+        LogsHandler logsHandler = new LogsHandler(request, "bla");
+        logsHandler.produceContent();
+        assertArrayEquals(expectedResponse, logsHandler.get());
     }
 }

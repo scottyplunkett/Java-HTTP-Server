@@ -36,13 +36,10 @@ public enum HTTPResponseCode {
     }
 
     public static int encode(String route) {
-        switch (route) {
-            case "/redirect": return 302;
-            case "/foobar": return 404;
-            case "/coffee": return 418;
-            default: return 200;
-        }
+        if (route.equals("/redirect")) return 302;
+        if (route.equals("/foobar")) return 404;
+        if (route.equals("/coffee")) return 418;
+        return 200;
     }
 }
-
 

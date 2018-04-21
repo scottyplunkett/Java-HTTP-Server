@@ -1,7 +1,7 @@
 package com.scottyplunkett.server.Cycle.Response;
 
 import com.scottyplunkett.server.Cycle.Request.HTTPRequest;
-import com.scottyplunkett.server.Cycle.Response.Behavior.Handlers.HTTPResponseHeaders;
+import com.scottyplunkett.server.Cycle.Response.Behavior.Handlers.*;
 import com.scottyplunkett.server.Cycle.Response.Routing.Router;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import static com.scottyplunkett.server.Cycle.Utils.ByteArraysReducer.merge;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HTTPResponseTest {
 
@@ -26,10 +27,10 @@ class HTTPResponseTest {
         Path filePath = Router.route(nicoleRequest);
         String content = Files.lines( filePath ).collect( Collectors.joining() );
         String expectedHeaders = "HTTP/1.1 200 OK\r\n" +
-                                 "Date: bla\r\n" +
-                                 "Content-Type: text/html\r\n";
+                "Date: bla\r\n" +
+                "Content-Type: text/html\r\n";
         String expectedResponse = expectedHeaders + "\r\n" + content;
-        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla", new DefaultHandler()).get());
     }
 
     @Test
@@ -39,13 +40,13 @@ class HTTPResponseTest {
         HTTPRequest request = new HTTPRequest(in);
         Path templatePath = Router.route(requestedWithParams);
         String expectedHeaders = "HTTP/1.1 200 OK\r\n" +
-                                 "Date: bla\r\n" +
-                                 "Content-Type: text/html\r\n";
+                "Date: bla\r\n" +
+                "Content-Type: text/html\r\n";
         String expectedGeneratedContent = "<p>variable_1 = Scott</p><br><p>variable_2 = Plunkett</p><br>";
         String content = Files.lines( templatePath ).collect( Collectors.joining() );
         content = content.replace("$content", expectedGeneratedContent);
         String expectedResponse = expectedHeaders + "\r\n" + content;
-        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla", new DefaultHandler()).get());
     }
 
     @Test
@@ -54,11 +55,14 @@ class HTTPResponseTest {
         InputStream in = new ByteArrayInputStream(requestMethodOptions.getBytes());
         HTTPRequest request = new HTTPRequest(in);
         String expectedHeaders = "HTTP/1.1 200 OK\r\n" +
-                                 "Allow: GET,HEAD,POST,OPTIONS,PUT\r\n" +
-                                 "Date: bla\r\n" +
-                                 "Content-Type: text/html\r\n";
+                "Allow: GET,HEAD,POST,OPTIONS,PUT\r\n" +
+                "Date: bla\r\n" +
+                "Content-Type: text/html\r\n";
         String expectedResponse = expectedHeaders + "\r\n" + "";
-        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
+        HTTPResponse actualInstance = new HTTPResponse(request, "bla", new DefaultHandler());
+        byte[] actualBytes = actualInstance.get();
+        String actualResponse = new String(actualBytes);
+        assertEquals(expectedResponse, actualResponse);
     }
 
     @Test
@@ -67,11 +71,11 @@ class HTTPResponseTest {
         InputStream in = new ByteArrayInputStream(requestMethodOptions2.getBytes());
         HTTPRequest request = new HTTPRequest(in);
         String expectedHeaders = "HTTP/1.1 200 OK\r\n" +
-                                 "Allow: GET,OPTIONS\r\n" +
-                                 "Date: bla\r\n" +
-                                 "Content-Type: text/html\r\n";
+                "Allow: GET,OPTIONS\r\n" +
+                "Date: bla\r\n" +
+                "Content-Type: text/html\r\n";
         String expectedResponse = expectedHeaders + "\r\n" + "";
-        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla", new DefaultHandler()).get());
     }
 
     @Test
@@ -81,7 +85,7 @@ class HTTPResponseTest {
         HTTPRequest request = new HTTPRequest(in);
         String expectedHeaders = "HTTP/1.1 200 OK\r\nDate: bla\r\nContent-Type: text/plain\r\n";
         String expectedResponse = expectedHeaders + "\r\n" + "default content";
-        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla", new PatchHandler()).get());
     }
 
     @Test
@@ -92,7 +96,7 @@ class HTTPResponseTest {
         HTTPRequest request = new HTTPRequest(in);
         String expectedHeaders = "HTTP/1.1 204\r\nDate: bla\r\nContent-Type: text/plain\r\n";
         String expectedResponse = expectedHeaders + "\r\n";
-        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse.getBytes(), new HTTPResponse(request, "bla", new PatchHandler()).get());
     }
 
     @Test
@@ -104,7 +108,7 @@ class HTTPResponseTest {
         byte[] body = Files.readAllBytes(imagePath);
         byte[] head = (new HTTPResponseHeaders("200 OK", "image/jpeg", "bla").get() + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new ImageHandler()).get());
     }
 
     @Test
@@ -116,7 +120,7 @@ class HTTPResponseTest {
         byte[] body = Files.readAllBytes(imagePath);
         byte[] head = (new HTTPResponseHeaders("200 OK", "image/gif", "bla").get() + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new ImageHandler()).get());
     }
 
     @Test
@@ -128,7 +132,7 @@ class HTTPResponseTest {
         byte[] body = Files.readAllBytes(imagePath);
         byte[] head = (new HTTPResponseHeaders("200 OK", "image/png", "bla").get() + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new ImageHandler()).get());
     }
 
     @Test
@@ -140,7 +144,7 @@ class HTTPResponseTest {
         byte[] body = Files.readAllBytes(textFilePath);
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/plain", "bla").get() + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new DefaultHandler()).get());
     }
 
     @Test
@@ -151,7 +155,7 @@ class HTTPResponseTest {
         byte[] body = "Eat".getBytes();
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "Set-Cookie: chocolate" + "\r\n\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new CookieHandler()).get());
     }
 
     @Test
@@ -160,10 +164,10 @@ class HTTPResponseTest {
         InputStream in = new ByteArrayInputStream(requestLogs.getBytes());
         HTTPRequest request = new HTTPRequest(in);
         byte[] head = (new HTTPResponseHeaders("401 Unauthorized", "text/html", "bla").get() +
-                                               "WWW-Authenticate: Basic realm=\"Logs\"\r\n\r\n").getBytes();
+                "WWW-Authenticate: Basic realm=\"Logs\"\r\n\r\n").getBytes();
         byte[] body = "401 Unauthorized... Probably Above Your Paygrade.".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new LogsHandler()).get());
     }
 
     @Test
@@ -174,7 +178,9 @@ class HTTPResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "<h1>data=fatcat</h1>".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        HTTPResponse httpResponse = new HTTPResponse(request, "bla", new FormHandler());
+        byte[] actualResponse = httpResponse.get();
+        assertArrayEquals(expectedResponse, actualResponse);
         Files.write(Paths.get("pages/form.html"), "".getBytes());
     }
 
@@ -186,7 +192,7 @@ class HTTPResponseTest {
         byte[] head = (new HTTPResponseHeaders("200 OK", "text/html", "bla").get() + "\r\n").getBytes();
         byte[] body = "".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new FormHandler()).get());
     }
 
     @Test
@@ -200,7 +206,7 @@ class HTTPResponseTest {
         byte[] head = (headers + "\r\n").getBytes();
         byte[] body = "This ".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new PartialHandler()).get());
     }
 
     @Test
@@ -213,6 +219,6 @@ class HTTPResponseTest {
         byte[] head = (headers + "\r\n").getBytes();
         byte[] body = "405: Method Not Allowed... Stick to what you're good at.".getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla").get());
+        assertArrayEquals(expectedResponse, new HTTPResponse(request, "bla", new RestrictedMethodHandler()).get());
     }
 }
