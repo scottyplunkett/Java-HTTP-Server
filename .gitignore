@@ -11,8 +11,8 @@ modules.xml
 ### Junit ###
 ./
 
-# Log file
-logs/
+# Logs
+./logs
 
 # BlueJ files
 *.ctxt

@@ -17,6 +17,7 @@ public class RequestResponseCycle implements Runnable {
     private Behavior behavior;
     private HTTPResponse response;
     private byte[] message;
+    private LogWriter logWriter;
 
 
     public RequestResponseCycle(Socket connection, InputStream input, OutputStream output) throws IOException {
@@ -26,6 +27,7 @@ public class RequestResponseCycle implements Runnable {
         request = new HTTPRequest(in);
         behavior = new Behavior(request);
         response = new HTTPResponse(request, behavior.handler);
+        logWriter = new LogWriter(request);
         message = response.get();
     }
 
@@ -48,6 +50,6 @@ public class RequestResponseCycle implements Runnable {
     }
 
     private void logRequest() throws IOException {
-        LogWriter.logRequest(request);
+        logWriter.logRequest();
     }
 }
