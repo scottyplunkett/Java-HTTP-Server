@@ -21,7 +21,9 @@ class CookieHandlerTest {
         HTTPResponseHeaders headersBeforeAppend = new HTTPResponseHeaders("200 OK", "text/html", "bla");
         byte[] head = (headersBeforeAppend.get() + "Set-Cookie: chocolate\r\n" + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new CookieHandler(request, "bla").get());
+        CookieHandler cookieHandler = new CookieHandler(request, "bla");
+        cookieHandler.produceContent();
+        assertArrayEquals(expectedResponse, cookieHandler.get());
     }
 
     @Test
@@ -33,6 +35,8 @@ class CookieHandlerTest {
         HTTPResponseHeaders headersBeforeAppend = new HTTPResponseHeaders("200 OK", "text/html", "bla");
         byte[] head = (headersBeforeAppend.get() + "Set-Cookie: chocolate\r\n" + "\r\n").getBytes();
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new CookieHandler(request, "bla").get());
+        CookieHandler cookieHandler = new CookieHandler(request, "bla");
+        cookieHandler.produceContent();
+        assertArrayEquals(expectedResponse, cookieHandler.get());
     }
 }

@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 public class PageContent {
     private String pageContent;
 
-    PageContent(Path pagesPath, String requested) throws IOException {
+    public PageContent(Path pagesPath, String requested) throws IOException {
         String htmlString = Files.lines(pagesPath).collect(Collectors.joining());
         pageContent = "pages/dynamic.html".equals(pagesPath.toString()) ?
-                        buildContentFromQuery(requested, htmlString) :
-                        htmlString;
+                buildContentFromQuery(requested, htmlString) :
+                htmlString;
     }
 
-    String get(){
+    public String get(){
         return pageContent;
     }
 

@@ -35,20 +35,14 @@ class RouterTest {
     }
 
     @Test
-    void testRouteGetInvalidResource() {
-        Path expectedPath = Paths.get("pages/404.html");
-        assertEquals(expectedPath, Router.route("GET /turtle HTTP/1.1"));
-    }
-
-    @Test
     void testRouteGetFile() {
-        Path expectedPath = Paths.get("pages/file1");
+        Path expectedPath = Paths.get("public/file1");
         assertEquals(expectedPath, Router.route("GET /file1 HTTP/1.1"));
     }
 
     @Test
     void testRouteGetCoffee() {
-        Path expectedPath = Paths.get("pages/418.html");
+        Path expectedPath = Paths.get("pages/coffee.html");
         assertEquals(expectedPath, Router.route("GET /coffee HTTP/1.1"));
     }
 
@@ -66,7 +60,7 @@ class RouterTest {
 
     @Test
     void testRouteForRequestOfMethodsOptions2() {
-        Path expectedPath = Paths.get("pages/method_options.html");
+        Path expectedPath = Paths.get("pages/method_options2.html");
         assertEquals(expectedPath, Router.route("OPTIONS /method_options2 HTTP/1.1"));
     }
 

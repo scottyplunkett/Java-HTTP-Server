@@ -1,29 +1,30 @@
 package com.scottyplunkett.server.Cycle.Response.Behavior.Handlers;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-class DirectoryContent {
+public class DirectoryContent {
+    private DirectoryStream<Path> directoryStream;
     private String directoryContent;
+    private static final String fileAnchor = "<a href=\"/$FileName\">$FileName</a><br>";
 
-    DirectoryContent(Path path){
-        String directory = String.valueOf(path);
+    public DirectoryContent(Path path) throws IOException {
         String content = "";
-        File[] files = new File(directory).listFiles();
-        List<String> names =  Arrays.asList(files).parallelStream()
-                                .map(file -> file.getName())
-                                .collect(Collectors.toList());
-        for (String name : names) {
-            String linkToFile = "<a href=\"" + "/" + name + "\">" + name + "</a><br>";
+        directoryStream = Files.newDirectoryStream(path);
+        for (Path file : directoryStream) {
+            String linkToFile = buildLink(file);
             content += linkToFile;
         }
         directoryContent = content;
     }
 
-    String get(){
+    private String buildLink(Path file) {
+        return fileAnchor.replace("$FileName", file.getFileName().toString());
+    }
+
+    public String get(){
         return directoryContent;
     }
 }

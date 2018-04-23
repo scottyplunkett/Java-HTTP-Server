@@ -24,7 +24,9 @@ class PartialHandlerTest {
         byte[] partialContent = "This is a file that contains text to read part of in order to fulfill a 206.\n".getBytes();
         byte[] body = Arrays.copyOfRange(partialContent,0,5);
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new PartialHandler(request, "bla").get());
+        PartialHandler partialHandler = new PartialHandler(request, "bla");
+        partialHandler.produceContent();
+        assertArrayEquals(expectedResponse, partialHandler.get());
     }
 
     @Test
@@ -39,7 +41,9 @@ class PartialHandlerTest {
         byte[] partialContent = "This is a file that contains text to read part of in order to fulfill a 206.\n".getBytes();
         byte[] body = Arrays.copyOfRange(partialContent,71,77);
         byte[] expectedResponse = merge(body, head);
-        assertArrayEquals(expectedResponse, new PartialHandler(request, "bla").get());
+        PartialHandler partialHandler = new PartialHandler(request, "bla");
+        partialHandler.produceContent();
+        assertArrayEquals(expectedResponse, partialHandler.get());
     }
 
 }
