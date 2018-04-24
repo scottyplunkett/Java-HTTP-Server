@@ -1,6 +1,6 @@
 package com.scottyplunkett.server;
 
-import com.scottyplunkett.server.Cycle.RequestResponseCycle;
+import com.scottyplunkett.server.cycle.RequestResponseCycle;
 
 import java.io.IOException;
 import java.io.InputStream;
